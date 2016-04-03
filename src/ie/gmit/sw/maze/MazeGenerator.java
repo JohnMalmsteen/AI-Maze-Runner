@@ -14,6 +14,7 @@ public class MazeGenerator {
 	private Random rand = new Random();
 	private int width;
 	private int height;
+
 	public MazeGenerator(int width, int height){
 		this.width = width;
 		this.height = height;
@@ -57,6 +58,24 @@ public class MazeGenerator {
 				if(row + 1 < height){
 					maze[row+1][col].setNorthConnection(maze[row][col].getSouthConnection());
 					maze[row+1][col].setNorth(maze[row][col]);
+				}
+				
+				if(row > 0 && row < height-1 && col > 0 && col < width-1 && rand.nextInt()%2 == 0){
+					int test = rand.nextInt(4);
+					
+					if(test == 0){
+						maze[row][col].getEastConnection().setType(ConnectionType.PASSAGE);
+						maze[row][col+1].getWestConnection().setType(ConnectionType.PASSAGE);
+					}else if(test == 1){
+						maze[row][col].getWestConnection().setType(ConnectionType.PASSAGE);
+						maze[row][col-1].getEastConnection().setType(ConnectionType.PASSAGE);
+					}else if(test == 2){
+						maze[row][col].getNorthConnection().setType(ConnectionType.PASSAGE);
+						maze[row-1][col].getSouthConnection().setType(ConnectionType.PASSAGE);
+					}else{
+						maze[row][col].getSouthConnection().setType(ConnectionType.PASSAGE);
+						maze[row+1][col].getNorthConnection().setType(ConnectionType.PASSAGE);
+					}
 				}
 			});
 		});
