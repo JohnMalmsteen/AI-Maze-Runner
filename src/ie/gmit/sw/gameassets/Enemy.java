@@ -25,5 +25,9 @@ public abstract class Enemy implements Sprite {
 	public BufferedImage getImage() {
 		return this.image;
 	}
+	
+	public void setImage(BufferedImage image){
+		this.image = image;
+	}
 
 }

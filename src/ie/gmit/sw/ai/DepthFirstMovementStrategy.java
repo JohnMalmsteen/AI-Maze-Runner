@@ -11,16 +11,12 @@ import ie.gmit.sw.maze.Cell;
 import ie.gmit.sw.maze.ConnectionType;
 
 public class DepthFirstMovementStrategy {
-	private int currentRow;
-	private int currentCol;
 	private Stack<Cell> stack = new Stack<>();
 	private Set<Cell> visited = new HashSet<>();
 	private Sprite rep;
 	private Cell holder;
 	
 	public DepthFirstMovementStrategy(Cell initial, Sprite rep){
-		this.currentCol = initial.getCol();
-		this.currentRow = initial.getRow();
 		stack.push(initial);
 		visited.add(stack.peek());
 		holder = initial;

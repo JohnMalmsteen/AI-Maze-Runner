@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.*;
 
 import javax.imageio.ImageIO;
 
@@ -30,6 +29,10 @@ public class Player implements Sprite {
 	@Override
 	public BufferedImage getImage() {
 		return this.image;
+	}
+	@Override
+	public void setImage(BufferedImage image) {
+		this.image = image;
 	}
 
 }
