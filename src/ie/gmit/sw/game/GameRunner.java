@@ -1,9 +1,12 @@
-package ie.gmit.sw.ai;
+package ie.gmit.sw.game;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
+
 import javax.swing.*;
 
+import ie.gmit.sw.gameassets.BlastEndedSkrewt;
 import ie.gmit.sw.gameassets.Player;
 import ie.gmit.sw.gameassets.Sprite;
 import ie.gmit.sw.maze.Cell;
@@ -15,7 +18,8 @@ public class GameRunner implements KeyListener{
 	private GameView view;
 	private int currentRow;
 	private int currentCol;
-	
+	private Random rand = new Random();
+	private BlastEndedSkrewt skrewt;
 	public GameRunner() throws Exception{
 
 		MazeGenerator maze = new MazeGenerator(MAZE_DIMENSION, MAZE_DIMENSION);
@@ -47,6 +51,14 @@ public class GameRunner implements KeyListener{
     		model[currentRow][currentCol].setSprite(new Player());
     	}
     	
+    	int skrewtRow = rand.nextInt(MAZE_DIMENSION);
+    	int skrewtCol = rand.nextInt(MAZE_DIMENSION);
+    	
+    	skrewt = new BlastEndedSkrewt(skrewtRow, skrewtCol, model);
+    	if(model[skrewtRow][skrewtCol].getSprite() == null){
+    		model[skrewtRow][skrewtCol].setSprite(skrewt);
+    	}
+    	
     	updateView(); 		
 	}
 	
@@ -57,7 +69,7 @@ public class GameRunner implements KeyListener{
 
     public void keyPressed(KeyEvent e) {
     	Sprite player = model[currentRow][currentCol].getSprite();
-    	
+    	skrewt.move();
         if (e.getKeyCode() == KeyEvent.VK_RIGHT && currentCol < MAZE_DIMENSION - 1) {
         	if (model[currentRow][currentCol].getEast().getType() == ConnectionType.PASSAGE) {
         		model[currentRow][currentCol].setSprite(null);

@@ -1,4 +1,4 @@
-package ie.gmit.sw.ai;
+package ie.gmit.sw.game;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -6,6 +6,7 @@ import java.awt.image.*;
 import javax.imageio.*;
 import javax.swing.*;
 
+import ie.gmit.sw.gameassets.BlastEndedSkrewt;
 import ie.gmit.sw.maze.Cell;
 import ie.gmit.sw.maze.ConnectionType;
 public class GameView extends JPanel implements ActionListener{
@@ -76,11 +77,17 @@ public class GameView extends JPanel implements ActionListener{
         				g2.fillRect(x1, y1, size, size);
         				continue;
         			}
+        			if(ch.getSprite() != null && ch.getSprite().getClass() == BlastEndedSkrewt.class){
+        				g2.setColor(Color.RED);
+        				g2.fillRect(x1, y1, size, size);
+        				continue;
+        			}
         		}else{
+
         			ch = maze[currentRow - cellpadding + row][currentCol - cellpadding + col];
         		}
         		
-        		g2.setColor(Color.LIGHT_GRAY);
+        		g2.setColor(new Color(30, 130, 30));
     			g2.fillRect(x1, y1, size, size);
     			
         		if(ch.getEast().getType()==ConnectionType.WALL){
