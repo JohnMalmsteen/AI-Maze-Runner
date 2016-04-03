@@ -11,8 +11,8 @@ import ie.gmit.sw.maze.ConnectionType;
 public class GameView extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	public static final int DEFAULT_VIEW_SIZE = 800;	
-	private int cellspan = 10;	
-	private int cellpadding = 5;
+	private int cellspan = 5;	
+	private int cellpadding = 2;
 	private Cell[][] maze;
 	private int enemy_state = 5;
 	private Timer timer;
@@ -23,6 +23,7 @@ public class GameView extends JPanel implements ActionListener{
 	private BufferedImage westWall;
 	private BufferedImage southWall;
 	private BufferedImage northWall;
+	private BufferedImage harry;
 	
 	public GameView(Cell[][] maze) throws Exception{
 		init();
@@ -57,7 +58,7 @@ public class GameView extends JPanel implements ActionListener{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
               
-        cellspan = zoomOut ? maze.length : 5;         
+        cellspan = zoomOut ? maze.length : 15;         
         final int size = DEFAULT_VIEW_SIZE/cellspan;
         g2.drawRect(0, 0, GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
         
@@ -76,7 +77,7 @@ public class GameView extends JPanel implements ActionListener{
         				continue;
         			}
         		}else{
-        			ch = maze[currentRow - 1 + row][currentCol - 1 + col];
+        			ch = maze[currentRow - cellpadding + row][currentCol - cellpadding + col];
         		}
         		
         		g2.setColor(Color.LIGHT_GRAY);
@@ -98,8 +99,9 @@ public class GameView extends JPanel implements ActionListener{
         			g2.drawImage(southWall, x1, y1, null);
         		}
         		
-        		
-    			
+        		if(ch.getSprite() != null){
+        			g2.drawImage(harry, x1+5, y1, null);
+        		}
         		   		
         	}
         }
@@ -123,5 +125,6 @@ public class GameView extends JPanel implements ActionListener{
 		eastWall = ImageIO.read(new java.io.File("resources/eastwall.png"));
 		northWall = ImageIO.read(new java.io.File("resources/northwall.png"));
 		southWall = ImageIO.read(new java.io.File("resources/southwall.png"));
+		harry = ImageIO.read(new java.io.File("resources/harry.png"));
 	}
 }

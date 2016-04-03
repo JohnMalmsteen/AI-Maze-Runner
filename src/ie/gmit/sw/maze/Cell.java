@@ -2,6 +2,8 @@ package ie.gmit.sw.maze;
 
 import java.util.List;
 
+import ie.gmit.sw.gameassets.Sprite;
+
 public interface Cell {
 	public List<EdgeConnector> getNeighbours();
 	public EdgeConnector getEast();
@@ -16,4 +18,6 @@ public interface Cell {
 	public void setCol(int y);
 	public int getRow();
 	public int getCol();
+	public Sprite getSprite();
+	public void setSprite(Sprite sprite);
 }

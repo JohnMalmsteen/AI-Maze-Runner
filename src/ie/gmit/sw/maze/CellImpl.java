@@ -8,10 +8,14 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import ie.gmit.sw.gameassets.Item;
+import ie.gmit.sw.gameassets.Sprite;
 
 public class CellImpl extends AbstractCell {
 	private Item powerup;
 	private BufferedImage image;
+	private Sprite sprite;
+
+
 	public CellImpl() {
 		try {
 			image = ImageIO.read(new java.io.File("resources/hedge.png"));
@@ -48,5 +52,12 @@ public class CellImpl extends AbstractCell {
 		return neighbours;
 	}
 
+	public Sprite getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
+	}
 
 }

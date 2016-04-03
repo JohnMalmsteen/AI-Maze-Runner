@@ -4,11 +4,13 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import ie.gmit.sw.gameassets.Player;
+import ie.gmit.sw.gameassets.Sprite;
 import ie.gmit.sw.maze.Cell;
 import ie.gmit.sw.maze.ConnectionType;
 import ie.gmit.sw.maze.MazeGenerator;
 public class GameRunner implements KeyListener{
-	private static final int MAZE_DIMENSION = 100;
+	private static final int MAZE_DIMENSION = 60;
 	private Cell[][] model;
 	private GameView view;
 	private int currentRow;
@@ -16,7 +18,7 @@ public class GameRunner implements KeyListener{
 	
 	public GameRunner() throws Exception{
 
-		MazeGenerator maze = new MazeGenerator(60, 60);
+		MazeGenerator maze = new MazeGenerator(MAZE_DIMENSION, MAZE_DIMENSION);
 		model = maze.getMaze();
     	view = new GameView(model);
     	
@@ -41,6 +43,9 @@ public class GameRunner implements KeyListener{
 	private void placePlayer(){   	
     	currentRow = (int) (MAZE_DIMENSION * Math.random());
     	currentCol = (int) (MAZE_DIMENSION * Math.random());
+    	if(model[currentRow][currentCol].getSprite() == null){
+    		model[currentRow][currentCol].setSprite(new Player());
+    	}
     	
     	updateView(); 		
 	}
@@ -51,49 +56,42 @@ public class GameRunner implements KeyListener{
 	}
 
     public void keyPressed(KeyEvent e) {
+    	Sprite player = model[currentRow][currentCol].getSprite();
+    	
         if (e.getKeyCode() == KeyEvent.VK_RIGHT && currentCol < MAZE_DIMENSION - 1) {
-        	if (isValidMove(currentRow, currentCol + 1)) currentCol++;   		
+        	if (model[currentRow][currentCol].getEast().getType() == ConnectionType.PASSAGE) {
+        		model[currentRow][currentCol].setSprite(null);
+        		currentCol++;   	
+        		model[currentRow][currentCol].setSprite(player);
+        	}
         }else if (e.getKeyCode() == KeyEvent.VK_LEFT && currentCol > 0) {
-        	if (isValidMove(currentRow, currentCol - 1)) currentCol--;	
+        	if (model[currentRow][currentCol].getWest().getType() == ConnectionType.PASSAGE){
+        		model[currentRow][currentCol].setSprite(null);
+        		currentCol--;
+        		model[currentRow][currentCol].setSprite(player);
+        	}
         }else if (e.getKeyCode() == KeyEvent.VK_UP && currentRow > 0) {
-        	if (isValidMove(currentRow - 1, currentCol)) currentRow--;
+        	if (model[currentRow][currentCol].getNorth().getType() == ConnectionType.PASSAGE){
+        		model[currentRow][currentCol].setSprite(null);
+        		currentRow--;
+        		model[currentRow][currentCol].setSprite(player);
+        	}
         }else if (e.getKeyCode() == KeyEvent.VK_DOWN && currentRow < MAZE_DIMENSION - 1) {
-        	if (isValidMove(currentRow + 1, currentCol)) currentRow++;        	  	
+        	if (model[currentRow][currentCol].getSouth().getType() == ConnectionType.PASSAGE){
+        		model[currentRow][currentCol].setSprite(null);
+        		currentRow++;
+        		model[currentRow][currentCol].setSprite(player);
+        	}
         }else if (e.getKeyCode() == KeyEvent.VK_Z){
         	view.toggleZoom();
         }else{
         	return;
         }
-        
+      
         updateView();       
     }
     public void keyReleased(KeyEvent e) {} //Ignore
 	public void keyTyped(KeyEvent e) {} //Ignore
-
-    
-	private boolean isValidMove(int r, int c){
-		if (r <= model.length - 1 && c <= model[r].length - 1 ){
-			if(r > currentRow && model[r][c].getWest().getType() == ConnectionType.PASSAGE){
-				return true;
-			}
-			
-			if(r < currentRow && model[r][c].getEast().getType() == ConnectionType.PASSAGE){
-				return true;
-			}
-			
-			if(c > currentCol && model[r][c].getSouth().getType() == ConnectionType.PASSAGE){
-				return true;
-			}
-			
-			if(c < currentCol && model[r][c].getNorth().getType() == ConnectionType.PASSAGE){
-				return true;
-			}
-			
-			return false;
-		}else{
-			return false; //Can't move
-		}
-	}
 	
 	public static void main(String[] args) throws Exception{
 		new GameRunner();
