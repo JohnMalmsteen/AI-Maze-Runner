@@ -58,8 +58,8 @@ public class GameView extends JPanel implements ActionListener{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
               
-        cellspan = zoomOut ? maze.length : 15;         
-        final int size = DEFAULT_VIEW_SIZE/cellspan;
+        cellspan = zoomOut ? maze.length : 5;       
+        int size = zoomOut ? (DEFAULT_VIEW_SIZE/cellspan)+1 : (DEFAULT_VIEW_SIZE/cellspan);
         g2.drawRect(0, 0, GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
         
         for(int row = 0; row < cellspan; row++) {
@@ -100,7 +100,7 @@ public class GameView extends JPanel implements ActionListener{
         		}
         		
         		if(ch.getSprite() != null){
-        			g2.drawImage(harry, x1+5, y1, null);
+        			g2.drawImage(ch.getSprite().getImage(), x1, y1, null);
         		}
         		   		
         	}
