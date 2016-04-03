@@ -8,8 +8,8 @@ import ie.gmit.sw.maze.Cell;
 public class BlastEndedSkrewt extends Enemy {
 	private DepthFirstMovementStrategy strategy;
 	
-	public BlastEndedSkrewt(int row, int col, Cell[][] model) {
-		strategy = new DepthFirstMovementStrategy(model, row, col, this);
+	public BlastEndedSkrewt(Cell initial) {
+		strategy = new DepthFirstMovementStrategy(initial, this);
 	}
 	@Override
 	public void move() {

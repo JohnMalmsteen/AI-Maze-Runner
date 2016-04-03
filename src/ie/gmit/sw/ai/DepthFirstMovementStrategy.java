@@ -11,19 +11,19 @@ import ie.gmit.sw.maze.Cell;
 import ie.gmit.sw.maze.ConnectionType;
 
 public class DepthFirstMovementStrategy {
-	private Cell[][] model;
 	private int currentRow;
 	private int currentCol;
 	private Stack<Cell> stack = new Stack<>();
 	private Set<Cell> visited = new HashSet<>();
 	private Sprite rep;
+	private Cell holder;
 	
-	public DepthFirstMovementStrategy(Cell[][] model, int row, int col, Sprite rep){
-		this.model = model;
-		this.currentCol = col;
-		this.currentRow = row;
-		stack.push(model[row][col]);
+	public DepthFirstMovementStrategy(Cell initial, Sprite rep){
+		this.currentCol = initial.getCol();
+		this.currentRow = initial.getRow();
+		stack.push(initial);
 		visited.add(stack.peek());
+		holder = initial;
 		this.rep = rep;
 	}
 	
@@ -31,44 +31,39 @@ public class DepthFirstMovementStrategy {
 		if(!stack.isEmpty()){
 			Cell current = stack.peek();
 			
-			int row = current.getRow();
-			int col = current.getCol();
 			List<Cell> options = new ArrayList<>();
-			if(row > 0 && model[row][col].getNorth().getType() == ConnectionType.PASSAGE && !visited.contains(model[row-1][col])){
-				options.add(model[row-1][col]);
+			if(current.getNorthConnection().getType() == ConnectionType.PASSAGE && !visited.contains(current.getNorth())){
+				options.add(current.getNorth());
 			}
 			
-			if(row + 1 < model.length && model[row][col].getSouth().getType() == ConnectionType.PASSAGE && !visited.contains(model[row+1][col])){
-				options.add(model[row+1][col]);
+			if(current.getSouthConnection().getType() == ConnectionType.PASSAGE && !visited.contains(current.getSouth())){
+				options.add(current.getSouth());
 			}
 			
-			if(col > 0 && model[row][col].getWest().getType() == ConnectionType.PASSAGE && !visited.contains(model[row][col-1])){
-				options.add(model[row][col-1]);
+			if(current.getWestConnection().getType() == ConnectionType.PASSAGE && !visited.contains(current.getWest())){
+				options.add(current.getWest());
 			}
 			
-			if(col+1 < model[0].length && model[row][col].getEast().getType() == ConnectionType.PASSAGE && !visited.contains(model[row][col+1])){
-				options.add(model[row][col+1]);
+			if(current.getEastConnection().getType() == ConnectionType.PASSAGE && !visited.contains(current.getEast())){
+				options.add(current.getEast());
 			}
 			
 			if(!options.isEmpty()){
+				current.setSprite(null);
 				stack.push(options.remove(0));
-				model[currentRow][currentCol].setSprite(null);
-				currentCol = stack.peek().getCol();
-				currentRow = stack.peek().getRow();
-				model[currentRow][currentCol].setSprite(rep);
+				stack.peek().setSprite(rep);
 				visited.add(stack.peek());
+				holder=stack.peek();
 			}else{
-				model[currentRow][currentCol].setSprite(null);
-				currentCol = stack.peek().getCol();
-				currentRow = stack.peek().getRow();
-				model[currentRow][currentCol].setSprite(rep);
-				stack.pop();
+				current.setSprite(null);
+				holder = stack.pop();
+				stack.peek().setSprite(rep);
 			}
 			
 		}else{
 			System.out.println("stackempty");
 			visited.clear();
-			stack.push(model[currentRow][currentCol]);
+			stack.push(holder);
 			move();
 		}
 	}

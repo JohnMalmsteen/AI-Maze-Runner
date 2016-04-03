@@ -45,10 +45,10 @@ public class CellImpl extends AbstractCell {
 	@Override
 	public List<EdgeConnector> getNeighbours() {
 		List<EdgeConnector> neighbours = new ArrayList<EdgeConnector>();
-		neighbours.add(east);
-		neighbours.add(west);
-		neighbours.add(north);
-		neighbours.add(south);
+		neighbours.add(eastConnection);
+		neighbours.add(westConnection);
+		neighbours.add(northConnection);
+		neighbours.add(southConnection);
 		return neighbours;
 	}
 

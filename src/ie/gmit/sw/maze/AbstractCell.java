@@ -1,38 +1,68 @@
 package ie.gmit.sw.maze;
 
 public abstract class AbstractCell implements Cell{
-	public EdgeConnector east;
-	public EdgeConnector west;
-	public EdgeConnector north;
-	public EdgeConnector south;
+	public EdgeConnector eastConnection;
+	public EdgeConnector westConnection;
+	public EdgeConnector northConnection;
+	public EdgeConnector southConnection;
+
+	public Cell east;
+	public Cell west;
+	public Cell south;
+	public Cell north;
+	
 	public int row;
 	public int col;
 	
-	public EdgeConnector getEast() {
-		return east;
+	public EdgeConnector getEastConnection() {
+		return eastConnection;
 	}
-	public void setEast(EdgeConnector east) {
-		this.east = east;
+	public void setEastConnection(EdgeConnector east) {
+		this.eastConnection = east;
 	}
-	public EdgeConnector getWest() {
-		return west;
+	public EdgeConnector getWestConnection() {
+		return westConnection;
 	}
-	public void setWest(EdgeConnector west) {
-		this.west = west;
+	public void setWestConnection(EdgeConnector west) {
+		this.westConnection = west;
 	}
-	public EdgeConnector getNorth() {
-		return north;
+	public EdgeConnector getNorthConnection() {
+		return northConnection;
 	}
-	public void setNorth(EdgeConnector north) {
-		this.north = north;
+	public void setNorthConnection(EdgeConnector north) {
+		this.northConnection = north;
 	}
-	public EdgeConnector getSouth() {
-		return south;
+	public EdgeConnector getSouthConnection() {
+		return southConnection;
 	}
-	public void setSouth(EdgeConnector south) {
-		this.south = south;
+	public void setSouthConnection(EdgeConnector south) {
+		this.southConnection = south;
 	}
 	
+	public Cell getEast() {
+		return east;
+	}
+	public void setEast(Cell east) {
+		this.east = east;
+	}
+	public Cell getWest() {
+		return west;
+	}
+	public void setWest(Cell west) {
+		this.west = west;
+	}
+	public Cell getSouth() {
+		return south;
+	}
+	public void setSouth(Cell south) {
+		this.south = south;
+	}
+	public Cell getNorth() {
+		return north;
+	}
+	public void setNorth(Cell north) {
+		this.north = north;
+	}
 	public void setRow(int row){
 		this.row = row;
 	}

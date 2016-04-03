@@ -35,24 +35,28 @@ public class MazeGenerator {
 		IntStream.range(0, width).forEach(row -> {
 			IntStream.range(0, height).forEach(col -> {
 			
-				maze[row][col].setEast(new EdgeConnector());
+				maze[row][col].setEastConnection(new EdgeConnector());
 				if(col+1 < width){
-					maze[row][col+1].setWest(maze[row][col].getEast());
+					maze[row][col+1].setWestConnection(maze[row][col].getEastConnection());
+					maze[row][col+1].setWest(maze[row][col]);
 				}
 			
-				maze[row][col].setWest(new EdgeConnector());
+				maze[row][col].setWestConnection(new EdgeConnector());
 				if(col > 0){
-					maze[row][col-1].setEast(maze[row][col].getWest());
+					maze[row][col-1].setEastConnection(maze[row][col].getWestConnection());
+					maze[row][col-1].setEast(maze[row][col]);
 				}
 			
-				maze[row][col].setNorth(new EdgeConnector());
+				maze[row][col].setNorthConnection(new EdgeConnector());
 				if(row > 0){
-					maze[row-1][col].setSouth(maze[row][col].getNorth());
+					maze[row-1][col].setSouthConnection(maze[row][col].getNorthConnection());
+					maze[row-1][col].setSouth(maze[row][col]);
 				}
 			
-				maze[row][col].setSouth(new EdgeConnector());
+				maze[row][col].setSouthConnection(new EdgeConnector());
 				if(row + 1 < height){
-					maze[row+1][col].setNorth(maze[row][col].getSouth());
+					maze[row+1][col].setNorthConnection(maze[row][col].getSouthConnection());
+					maze[row+1][col].setNorth(maze[row][col]);
 				}
 			});
 		});
@@ -96,15 +100,15 @@ public class MazeGenerator {
 				Cell choice = options.get(rand.nextInt(options.size()));
 				stack.push(current);
 				if(current.getRow() > choice.getRow()){
-					current.getNorth().setType(ConnectionType.PASSAGE);
+					current.getNorthConnection().setType(ConnectionType.PASSAGE);
 				}else if(current.getRow() < choice.getRow()){
-					current.getSouth().setType(ConnectionType.PASSAGE);
+					current.getSouthConnection().setType(ConnectionType.PASSAGE);
 				}
 				
 				if(choice.getCol() > current.getCol()){
-					current.getEast().setType(ConnectionType.PASSAGE);
+					current.getEastConnection().setType(ConnectionType.PASSAGE);
 				}else if(choice.getCol() < current.getCol()){
-					current.getWest().setType(ConnectionType.PASSAGE);
+					current.getWestConnection().setType(ConnectionType.PASSAGE);
 				}
 				
 				current = choice;

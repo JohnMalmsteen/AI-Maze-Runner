@@ -54,7 +54,7 @@ public class GameRunner implements KeyListener{
     	int skrewtRow = rand.nextInt(MAZE_DIMENSION);
     	int skrewtCol = rand.nextInt(MAZE_DIMENSION);
     	
-    	skrewt = new BlastEndedSkrewt(skrewtRow, skrewtCol, model);
+    	skrewt = new BlastEndedSkrewt(model[skrewtRow][skrewtCol]);
     	if(model[skrewtRow][skrewtCol].getSprite() == null){
     		model[skrewtRow][skrewtCol].setSprite(skrewt);
     	}
@@ -71,25 +71,25 @@ public class GameRunner implements KeyListener{
     	Sprite player = model[currentRow][currentCol].getSprite();
     	skrewt.move();
         if (e.getKeyCode() == KeyEvent.VK_RIGHT && currentCol < MAZE_DIMENSION - 1) {
-        	if (model[currentRow][currentCol].getEast().getType() == ConnectionType.PASSAGE) {
+        	if (model[currentRow][currentCol].getEastConnection().getType() == ConnectionType.PASSAGE) {
         		model[currentRow][currentCol].setSprite(null);
         		currentCol++;   	
         		model[currentRow][currentCol].setSprite(player);
         	}
         }else if (e.getKeyCode() == KeyEvent.VK_LEFT && currentCol > 0) {
-        	if (model[currentRow][currentCol].getWest().getType() == ConnectionType.PASSAGE){
+        	if (model[currentRow][currentCol].getWestConnection().getType() == ConnectionType.PASSAGE){
         		model[currentRow][currentCol].setSprite(null);
         		currentCol--;
         		model[currentRow][currentCol].setSprite(player);
         	}
         }else if (e.getKeyCode() == KeyEvent.VK_UP && currentRow > 0) {
-        	if (model[currentRow][currentCol].getNorth().getType() == ConnectionType.PASSAGE){
+        	if (model[currentRow][currentCol].getNorthConnection().getType() == ConnectionType.PASSAGE){
         		model[currentRow][currentCol].setSprite(null);
         		currentRow--;
         		model[currentRow][currentCol].setSprite(player);
         	}
         }else if (e.getKeyCode() == KeyEvent.VK_DOWN && currentRow < MAZE_DIMENSION - 1) {
-        	if (model[currentRow][currentCol].getSouth().getType() == ConnectionType.PASSAGE){
+        	if (model[currentRow][currentCol].getSouthConnection().getType() == ConnectionType.PASSAGE){
         		model[currentRow][currentCol].setSprite(null);
         		currentRow++;
         		model[currentRow][currentCol].setSprite(player);

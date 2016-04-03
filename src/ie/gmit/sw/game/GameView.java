@@ -90,19 +90,19 @@ public class GameView extends JPanel implements ActionListener{
         		g2.setColor(new Color(30, 130, 30));
     			g2.fillRect(x1, y1, size, size);
     			
-        		if(ch.getEast().getType()==ConnectionType.WALL){
+        		if(ch.getEastConnection().getType()==ConnectionType.WALL){
         			g2.drawImage(eastWall, x1, y1, null);
         		}
         		
-        		if(ch.getWest().getType()==ConnectionType.WALL){
+        		if(ch.getWestConnection().getType()==ConnectionType.WALL){
         			g2.drawImage(westWall, x1, y1, null);
         		}
         		
-        		if(ch.getNorth().getType()==ConnectionType.WALL){
+        		if(ch.getNorthConnection().getType()==ConnectionType.WALL){
         			g2.drawImage(northWall, x1, y1, null);
         		}
         		
-        		if(ch.getSouth().getType()==ConnectionType.WALL){
+        		if(ch.getSouthConnection().getType()==ConnectionType.WALL){
         			g2.drawImage(southWall, x1, y1, null);
         		}
         		
