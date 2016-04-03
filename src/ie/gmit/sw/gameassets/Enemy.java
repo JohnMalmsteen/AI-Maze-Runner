@@ -13,12 +13,12 @@ public abstract class Enemy implements Sprite {
 		try {
 			image = ImageIO.read(new File("resources/spider_up.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
 	public void move() {
-		// TODO Auto-generated method stub
+
 		
 	}
 

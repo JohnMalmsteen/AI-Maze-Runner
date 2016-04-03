@@ -13,7 +13,7 @@ import ie.gmit.sw.gameassets.Sprite;
 public class CellImpl extends AbstractCell {
 	private Item powerup;
 	private BufferedImage image;
-	private Sprite sprite;
+	private List<Sprite> sprites = new ArrayList<>();
 
 
 	public CellImpl() {
@@ -53,11 +53,28 @@ public class CellImpl extends AbstractCell {
 	}
 
 	public Sprite getSprite() {
-		return sprite;
+		if(!sprites.isEmpty())
+			return sprites.get(sprites.size()-1);
+		
+		return null;
 	}
 
-	public void setSprite(Sprite sprite) {
-		this.sprite = sprite;
+	@Override
+	public double getDistanceToCell(int row, int col) {
+		double ans = Math.sqrt((Math.pow(((double)row-(double)this.row), 2) + Math.pow(((double)col-(double)this.col), 2)));
+		return ans;
 	}
+
+	@Override
+	public void addSprite(Sprite sprite) {
+		sprites.add(sprite);
+	}
+
+	@Override
+	public void removeSprite(Sprite sprite) {
+		sprites.remove(sprite);
+	}
+	
+	
 
 }

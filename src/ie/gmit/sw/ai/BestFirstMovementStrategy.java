@@ -1,8 +1,8 @@
 package ie.gmit.sw.ai;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
@@ -10,20 +10,23 @@ import ie.gmit.sw.gameassets.Sprite;
 import ie.gmit.sw.maze.Cell;
 import ie.gmit.sw.maze.ConnectionType;
 
-public class DepthFirstMovementStrategy implements MovementStrategy {
+public class BestFirstMovementStrategy implements MovementStrategy{
+
 	private Stack<Cell> stack = new Stack<>();
 	private Set<Cell> visited = new HashSet<>();
 	private Sprite rep;
 	private Cell holder;
+	HeuristicCellComparator comparator = new HeuristicCellComparator();
 	
-	public DepthFirstMovementStrategy(Cell initial, Sprite rep){
+	public BestFirstMovementStrategy(Cell initial, Sprite rep){
 		stack.push(initial);
 		visited.add(stack.peek());
 		holder = initial;
 		this.rep = rep;
 	}
 	
-	public void move(){
+	@Override
+	public void move() {
 		if(!stack.isEmpty()){
 			Cell current = stack.peek();
 			
@@ -45,15 +48,16 @@ public class DepthFirstMovementStrategy implements MovementStrategy {
 			}
 			
 			if(!options.isEmpty()){
-				current.removeSprite(rep);
-				stack.push(options.remove(0));
-				stack.peek().addSprite(rep);
+				current.removeSprite(rep);;
+				options.sort(comparator);
+				stack.push(options.get(0));
+				stack.peek().addSprite(rep);;
 				visited.add(stack.peek());
 				holder=stack.peek();
 			}else{
 				current.removeSprite(rep);;
 				holder = stack.pop();
-				stack.peek().addSprite(rep);
+				stack.peek().addSprite(rep);;
 			}
 			
 		}else{
@@ -61,7 +65,7 @@ public class DepthFirstMovementStrategy implements MovementStrategy {
 			visited.clear();
 			stack.push(holder);
 			move();
-		}
+		}	
 	}
-	
+
 }

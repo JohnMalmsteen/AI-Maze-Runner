@@ -6,6 +6,7 @@ import java.util.Random;
 
 import javax.swing.*;
 
+import ie.gmit.sw.ai.HeuristicCellComparator;
 import ie.gmit.sw.gameassets.BlastEndedSkrewt;
 import ie.gmit.sw.gameassets.Player;
 import ie.gmit.sw.gameassets.Sprite;
@@ -47,17 +48,19 @@ public class GameRunner implements KeyListener{
 	private void placePlayer(){   	
     	currentRow = (int) (MAZE_DIMENSION * Math.random());
     	currentCol = (int) (MAZE_DIMENSION * Math.random());
+    	HeuristicCellComparator.setTargetColumn(currentCol);
+    	HeuristicCellComparator.setTargetRow(currentRow);
     	if(model[currentRow][currentCol].getSprite() == null){
-    		model[currentRow][currentCol].setSprite(new Player());
+    		model[currentRow][currentCol].addSprite(new Player());
     	}
     	
     	int skrewtRow = rand.nextInt(MAZE_DIMENSION);
     	int skrewtCol = rand.nextInt(MAZE_DIMENSION);
     	
     	skrewt = new BlastEndedSkrewt(model[skrewtRow][skrewtCol]);
-    	if(model[skrewtRow][skrewtCol].getSprite() == null){
-    		model[skrewtRow][skrewtCol].setSprite(skrewt);
-    	}
+
+		model[skrewtRow][skrewtCol].addSprite(skrewt);
+    	
     	
     	updateView(); 		
 	}
@@ -72,34 +75,35 @@ public class GameRunner implements KeyListener{
     	skrewt.move();
         if (e.getKeyCode() == KeyEvent.VK_RIGHT && currentCol < MAZE_DIMENSION - 1) {
         	if (model[currentRow][currentCol].getEastConnection().getType() == ConnectionType.PASSAGE) {
-        		model[currentRow][currentCol].setSprite(null);
+        		model[currentRow][currentCol].removeSprite(player);
         		currentCol++;   	
-        		model[currentRow][currentCol].setSprite(player);
+        		model[currentRow][currentCol].addSprite(player);
         	}
         }else if (e.getKeyCode() == KeyEvent.VK_LEFT && currentCol > 0) {
         	if (model[currentRow][currentCol].getWestConnection().getType() == ConnectionType.PASSAGE){
-        		model[currentRow][currentCol].setSprite(null);
+        		model[currentRow][currentCol].removeSprite(player);
         		currentCol--;
-        		model[currentRow][currentCol].setSprite(player);
+        		model[currentRow][currentCol].addSprite(player);
         	}
         }else if (e.getKeyCode() == KeyEvent.VK_UP && currentRow > 0) {
         	if (model[currentRow][currentCol].getNorthConnection().getType() == ConnectionType.PASSAGE){
-        		model[currentRow][currentCol].setSprite(null);
+        		model[currentRow][currentCol].removeSprite(player);
         		currentRow--;
-        		model[currentRow][currentCol].setSprite(player);
+        		model[currentRow][currentCol].addSprite(player);
         	}
         }else if (e.getKeyCode() == KeyEvent.VK_DOWN && currentRow < MAZE_DIMENSION - 1) {
         	if (model[currentRow][currentCol].getSouthConnection().getType() == ConnectionType.PASSAGE){
-        		model[currentRow][currentCol].setSprite(null);
+        		model[currentRow][currentCol].removeSprite(player);
         		currentRow++;
-        		model[currentRow][currentCol].setSprite(player);
+        		model[currentRow][currentCol].addSprite(player);
         	}
         }else if (e.getKeyCode() == KeyEvent.VK_Z){
         	view.toggleZoom();
         }else{
         	return;
         }
-      
+        HeuristicCellComparator.setTargetColumn(currentCol);
+        HeuristicCellComparator.setTargetRow(currentRow);
         updateView();       
     }
     public void keyReleased(KeyEvent e) {} //Ignore

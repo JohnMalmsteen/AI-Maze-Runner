@@ -7,13 +7,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import ie.gmit.sw.ai.DepthFirstMovementStrategy;
+import ie.gmit.sw.ai.MovementStrategy;
 import ie.gmit.sw.maze.Cell;
 
 public class BlastEndedSkrewt extends Enemy {
-	private DepthFirstMovementStrategy strategy;
+	private MovementStrategy strategy;
 	
 	public BlastEndedSkrewt(Cell initial) {
 		strategy = new DepthFirstMovementStrategy(initial, this);
+		
 		try {
 			BufferedImage image = ImageIO.read(new File("resources/skrewt.png"));
 			setImage(image);

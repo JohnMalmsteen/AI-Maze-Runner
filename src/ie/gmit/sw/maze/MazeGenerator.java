@@ -119,20 +119,9 @@ public class MazeGenerator {
 		}
 	}
 	
-	public void display(){
-		for(int i = 0; i < width; i++){
-			for(int j = 0; j < height; j++){
-				System.out.print("(i, j) : (" + i + ", "  + j + ") \t");
-			}
-			System.out.println();
-		}
-	}
 	
 	public Cell[][] getMaze(){
 		return maze;
 	}
-	public static void main(String[] args) {
-		MazeGenerator maze = new MazeGenerator(6, 6);
-		maze.display();
-	}
+
 }

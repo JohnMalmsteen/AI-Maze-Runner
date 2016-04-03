@@ -26,6 +26,8 @@ public interface Cell {
 	public void setCol(int y);
 	public int getRow();
 	public int getCol();
+	public void addSprite(Sprite sprite);
+	public void removeSprite(Sprite sprite);
 	public Sprite getSprite();
-	public void setSprite(Sprite sprite);
+	public double getDistanceToCell(int row, int col);
 }
