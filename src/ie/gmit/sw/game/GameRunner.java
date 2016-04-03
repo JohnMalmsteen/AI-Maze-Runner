@@ -6,7 +6,7 @@ import java.util.Random;
 
 import javax.swing.*;
 
-import ie.gmit.sw.ai.HeuristicCellComparator;
+import ie.gmit.sw.ai.EnemyHeuristicCellComparator;
 import ie.gmit.sw.gameassets.BlastEndedSkrewt;
 import ie.gmit.sw.gameassets.Player;
 import ie.gmit.sw.gameassets.Sprite;
@@ -21,6 +21,8 @@ public class GameRunner implements KeyListener{
 	private int currentCol;
 	private Random rand = new Random();
 	private BlastEndedSkrewt skrewt;
+	private static Cell triwizardCup;
+	
 	public GameRunner() throws Exception{
 
 		MazeGenerator maze = new MazeGenerator(MAZE_DIMENSION, MAZE_DIMENSION);
@@ -48,8 +50,8 @@ public class GameRunner implements KeyListener{
 	private void placePlayer(){   	
     	currentRow = (int) (MAZE_DIMENSION * Math.random());
     	currentCol = (int) (MAZE_DIMENSION * Math.random());
-    	HeuristicCellComparator.setTargetColumn(currentCol);
-    	HeuristicCellComparator.setTargetRow(currentRow);
+    	EnemyHeuristicCellComparator.setTargetColumn(currentCol);
+    	EnemyHeuristicCellComparator.setTargetRow(currentRow);
     	if(model[currentRow][currentCol].getSprite() == null){
     		model[currentRow][currentCol].addSprite(new Player());
     	}
@@ -102,12 +104,20 @@ public class GameRunner implements KeyListener{
         }else{
         	return;
         }
-        HeuristicCellComparator.setTargetColumn(currentCol);
-        HeuristicCellComparator.setTargetRow(currentRow);
+        EnemyHeuristicCellComparator.setTargetColumn(currentCol);
+        EnemyHeuristicCellComparator.setTargetRow(currentRow);
         updateView();       
     }
     public void keyReleased(KeyEvent e) {} //Ignore
 	public void keyTyped(KeyEvent e) {} //Ignore
+	
+	public static Cell getTriwizardCup(){
+		return triwizardCup;
+	}
+	
+	public static void setTrizardCup(Cell cup){
+		triwizardCup = cup;
+	}
 	
 	public static void main(String[] args) throws Exception{
 		new GameRunner();

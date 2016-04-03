@@ -16,7 +16,7 @@ public class BestFirstMovementStrategy implements MovementStrategy{
 	private Set<Cell> visited = new HashSet<>();
 	private Sprite rep;
 	private Cell holder;
-	HeuristicCellComparator comparator = new HeuristicCellComparator();
+	EnemyHeuristicCellComparator comparator = new EnemyHeuristicCellComparator();
 	
 	public BestFirstMovementStrategy(Cell initial, Sprite rep){
 		stack.push(initial);

@@ -37,7 +37,8 @@ public class RandomMovementStrategy implements MovementStrategy {
 		}
 		
 		current.removeSprite(rep);
-		options.get(rand.nextInt(options.size())).addSprite(rep);
+		current = options.get(rand.nextInt(options.size()));
+		current.addSprite(rep);
 	}
 
 }

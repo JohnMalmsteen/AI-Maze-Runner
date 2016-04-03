@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import ie.gmit.sw.maze.Cell;
 
-public class HeuristicCellComparator implements Comparator<Cell> {
+public class EnemyHeuristicCellComparator implements Comparator<Cell> {
 	private static int targetRow = 0;
 	private static int targetColumn = 0;
 	

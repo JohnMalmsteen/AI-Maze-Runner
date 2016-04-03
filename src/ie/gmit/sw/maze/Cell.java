@@ -5,7 +5,7 @@ import java.util.List;
 import ie.gmit.sw.gameassets.Sprite;
 
 public interface Cell {
-	public List<EdgeConnector> getNeighbours();
+	public List<Direction> getNeighbours();
 	public EdgeConnector getEastConnection();
 	public EdgeConnector getWestConnection();
 	public EdgeConnector getNorthConnection();
@@ -30,4 +30,6 @@ public interface Cell {
 	public void removeSprite(Sprite sprite);
 	public Sprite getSprite();
 	public double getDistanceToCell(int row, int col);
+	public boolean getPathIndicator();
+	public void setPathIndicator(boolean inpath);
 }

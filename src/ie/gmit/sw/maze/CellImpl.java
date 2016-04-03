@@ -14,8 +14,8 @@ public class CellImpl extends AbstractCell {
 	private Item powerup;
 	private BufferedImage image;
 	private List<Sprite> sprites = new ArrayList<>();
-
-
+	private boolean pathIndicator;
+	
 	public CellImpl() {
 		try {
 			image = ImageIO.read(new java.io.File("resources/hedge.png"));
@@ -43,12 +43,24 @@ public class CellImpl extends AbstractCell {
 
 
 	@Override
-	public List<EdgeConnector> getNeighbours() {
-		List<EdgeConnector> neighbours = new ArrayList<EdgeConnector>();
-		neighbours.add(eastConnection);
-		neighbours.add(westConnection);
-		neighbours.add(northConnection);
-		neighbours.add(southConnection);
+	public List<Direction> getNeighbours() {
+		List<Direction> neighbours = new ArrayList<>();
+		if(eastConnection.getType() == ConnectionType.PASSAGE){
+			neighbours.add(Direction.EAST);
+		}
+		
+		if(westConnection.getType() == ConnectionType.PASSAGE){
+			neighbours.add(Direction.WEST);
+		}
+		
+		if(northConnection.getType() == ConnectionType.PASSAGE){
+			neighbours.add(Direction.NORTH);
+		}
+		
+		if(southConnection.getType() == ConnectionType.PASSAGE){
+			neighbours.add(Direction.SOUTH);
+		}
+		
 		return neighbours;
 	}
 
@@ -73,6 +85,16 @@ public class CellImpl extends AbstractCell {
 	@Override
 	public void removeSprite(Sprite sprite) {
 		sprites.remove(sprite);
+	}
+
+	@Override
+	public boolean getPathIndicator() {
+		return pathIndicator;
+	}
+
+	@Override
+	public void setPathIndicator(boolean inpath) {
+		this.pathIndicator = inpath;
 	}
 	
 	
