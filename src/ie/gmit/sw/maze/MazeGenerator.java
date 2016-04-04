@@ -60,7 +60,7 @@ public class MazeGenerator {
 					maze[row+1][col].setNorth(maze[row][col]);
 				}
 				
-				if(row > 0 && row < height-1 && col > 0 && col < width-1 && rand.nextInt()%2 == 0){
+				if(row > 0 && row < height-1 && col > 0 && col < width-1 && rand.nextInt()%4 == 0){
 					int test = rand.nextInt(4);
 					
 					if(test == 0){

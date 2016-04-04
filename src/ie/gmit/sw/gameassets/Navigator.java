@@ -7,8 +7,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
-import ie.gmit.sw.ai.NavigatorHeuristicComparator;
 import ie.gmit.sw.game.GameRunner;
 import ie.gmit.sw.maze.Cell;
 import ie.gmit.sw.maze.Direction;
@@ -17,7 +15,6 @@ public class Navigator implements Item {
 	private BufferedImage image;
 	private int goalRow;
 	private int goalCol;
-	private NavigatorHeuristicComparator sorter = new NavigatorHeuristicComparator();
 	private PriorityQueue<Cell> open;
 	private List<Cell> closed = new ArrayList<Cell>();
 	private Map<Cell, Cell> cameFrom = new HashMap<>();

@@ -3,6 +3,9 @@ package ie.gmit.sw.game;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.io.File;
+import java.io.IOException;
+
 import javax.imageio.*;
 import javax.swing.*;
 
@@ -24,6 +27,7 @@ public class GameView extends JPanel implements ActionListener{
 	private BufferedImage westWall;
 	private BufferedImage southWall;
 	private BufferedImage northWall;
+	private BufferedImage trophy;
 
 	
 	public GameView(Cell[][] maze) throws Exception{
@@ -112,6 +116,11 @@ public class GameView extends JPanel implements ActionListener{
         		if(ch.getItem()!=null){
         			g2.drawImage(ch.getItem().getImage(), x1, y1, null);
         		}
+        		
+        		if(ch == GameRunner.getTriwizardCup()){
+					g2.drawImage(trophy, x1, y1, null);
+        		}
+        		
         		if(ch.getSprite() != null){
         			g2.drawImage(ch.getSprite().getImage(), x1, y1, null);
         		}
@@ -138,5 +147,6 @@ public class GameView extends JPanel implements ActionListener{
 		eastWall = ImageIO.read(new java.io.File("resources/eastwall.png"));
 		northWall = ImageIO.read(new java.io.File("resources/northwall.png"));
 		southWall = ImageIO.read(new java.io.File("resources/southwall.png"));
+		trophy = ImageIO.read(new File("resources/trophy.png"));
 	}
 }
