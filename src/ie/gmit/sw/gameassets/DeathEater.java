@@ -13,10 +13,10 @@ import ie.gmit.sw.ai.RandomMovementStrategy;
 import ie.gmit.sw.ai.StrategyType;
 import ie.gmit.sw.maze.Cell;
 
-public class BlastEndedSkrewt extends Enemy {
+public class DeathEater extends Enemy {
 	private MovementStrategy strategy;
 	
-	public BlastEndedSkrewt(Cell initial, StrategyType strategytype) {
+	public DeathEater(Cell initial, StrategyType strategytype) {
 		if(strategytype == StrategyType.DEPTH_FIRST){
 			strategy = new DepthFirstMovementStrategy(initial, this);
 		}
@@ -26,15 +26,15 @@ public class BlastEndedSkrewt extends Enemy {
 			strategy = new RandomMovementStrategy(initial, this);
 		}
 		
-		this.setStrength("FEEBLE");
+		this.setStrength("FORMIDABLE");
 		try {
-			BufferedImage image = ImageIO.read(new File("resources/skrewt.png"));
+			BufferedImage image = ImageIO.read(new File("resources/snape.png"));
 			setImage(image);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
 	@Override
 	public void move() {
 		this.strategy.move();

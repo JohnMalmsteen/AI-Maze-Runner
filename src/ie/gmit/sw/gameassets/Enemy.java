@@ -8,7 +8,8 @@ import javax.imageio.ImageIO;
 
 public abstract class Enemy implements Sprite {
 	private BufferedImage image;
-	
+	private String strength;
+	private boolean alive;
 	public Enemy(){
 		try {
 			image = ImageIO.read(new File("resources/spider_up.png"));
@@ -28,6 +29,22 @@ public abstract class Enemy implements Sprite {
 	
 	public void setImage(BufferedImage image){
 		this.image = image;
+	}
+
+	public String getStrength() {
+		return strength;
+	}
+
+	public void setStrength(String strength) {
+		this.strength = strength;
+	}
+
+	public boolean isAlive() {
+		return alive;
+	}
+
+	public void setAlive(boolean alive) {
+		this.alive = alive;
 	}
 
 }

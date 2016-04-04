@@ -10,7 +10,7 @@ public class IndependentEntity implements Runnable{
 	}
 	@Override
 	public void run() {
-		while(true){
+		while(enemy.isAlive()){
 			enemy.move();
 			try {
 				Thread.sleep(1000);

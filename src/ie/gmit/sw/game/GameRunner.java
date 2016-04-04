@@ -31,7 +31,7 @@ public class GameRunner implements KeyListener{
 	private static Cell triwizardCup;
 	private static ExecutorService pool;
 	private static EntityFactory factory;
-	private static int enemyCount;
+	private static int skrewtCount;
 	
 	public GameRunner() throws Exception{
 		MazeGenerator maze = new MazeGenerator(MAZE_DIMENSION, MAZE_DIMENSION);
@@ -39,15 +39,23 @@ public class GameRunner implements KeyListener{
 		triwizardCup = model[MAZE_DIMENSION/2][MAZE_DIMENSION/2];
     	view = new GameView(model);
     	
-    	enemyCount = (MAZE_DIMENSION * MAZE_DIMENSION)/40;
-    	pool = Executors.newFixedThreadPool(enemyCount);
+    	skrewtCount = (MAZE_DIMENSION * MAZE_DIMENSION)/40;
+    	pool = Executors.newFixedThreadPool(skrewtCount);
     	factory = EntityFactory.getInstance();
     	
-    	IntStream.range(0, enemyCount).forEach(enem ->{
+    	IntStream.range(0, skrewtCount).forEach(enem ->{
     		int skrewtRow = rand.nextInt(MAZE_DIMENSION);
         	int skrewtCol = rand.nextInt(MAZE_DIMENSION);
     		Runnable entity = factory.getEntity(model[skrewtRow][skrewtCol], EnemyType.SKREWT, StrategyType.RANDOM);
     		pool.submit(entity);
+    		
+    		if(enem%2 == 0){
+    			int derow = rand.nextInt(MAZE_DIMENSION);
+    			int decol = rand.nextInt(MAZE_DIMENSION);
+    			Runnable dentity = factory.getEntity(model[derow][decol], EnemyType.DEATHEATER, StrategyType.BEST_FIRST);
+    			pool.submit(dentity);
+    		}
+    		
     	});
     	
     	placePlayer();
