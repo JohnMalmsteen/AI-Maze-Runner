@@ -15,12 +15,10 @@ public class Navigator implements Item {
 	private List<Cell> closed = new ArrayList<Cell>();
 	private Map<Cell, Cell> cameFrom = new HashMap<>();
 	private Map<Cell, Double> gscores = new HashMap<>();
-	private Map<Cell, Double> fscores =  new HashMap<>();
 	
-	private Cell initial;
 	
 	public Navigator(Cell initial) {
-		this.initial = initial;
+		open.add(initial);
 	}
 	
 	@Override
@@ -37,13 +35,10 @@ public class Navigator implements Item {
 		//start cell has 0 abs cost
 		gscores.put(start, 0.0);
 		
-		//fscore is entirely heuristic
-		fscores.put(start, getHeuristicCost(start));
-		
 		while(!open.isEmpty()){
 			Cell current = open.poll();
 			if(current == GameRunner.getTriwizardCup()){
-				return reconstructPath();
+				return reconstructPath(current);
 			}
 			
 			
@@ -62,7 +57,7 @@ public class Navigator implements Item {
 				double score = gscores.get(current) + 1.0;
 				
 				if(!open.contains(neighbour)){
-					open.add(neighbour));
+					open.add(neighbour);
 				}
 				
 				
@@ -72,7 +67,6 @@ public class Navigator implements Item {
 				else{
 					cameFrom.put(neighbour, current);
 					gscores.put(neighbour, score);
-					fscores.put(neighbour, score + getHeuristicCost(neighbour));
 				}
 			}
 			
@@ -81,8 +75,22 @@ public class Navigator implements Item {
 		return null;
 	}
 	
-	public List<Cell> reconstructPath(){
-		return null;
+	public List<Cell> reconstructPath(Cell current){
+		List<Cell> returnList = new ArrayList<>();
+		returnList.add(current);
+		do{
+			if(cameFrom.containsKey(current)){
+				Cell next = cameFrom.get(current);
+				returnList.add(next);
+				current = next;
+			}else{
+				Collections.reverse(returnList);
+				return returnList;
+			}
+			
+		}
+		while(true);
+
 	}
 	
 	public double getHeuristicCost(Cell from){
