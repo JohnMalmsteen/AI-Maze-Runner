@@ -4,34 +4,51 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.*;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 import java.util.*;
 import javax.swing.*;
 
 import ie.gmit.sw.ai.EnemyHeuristicCellComparator;
-import ie.gmit.sw.gameassets.BlastEndedSkrewt;
+import ie.gmit.sw.ai.StrategyType;
+import ie.gmit.sw.gameassets.EnemyType;
 import ie.gmit.sw.gameassets.Item;
 import ie.gmit.sw.gameassets.Navigator;
 import ie.gmit.sw.gameassets.Player;
-import ie.gmit.sw.gameassets.Sprite;
 import ie.gmit.sw.maze.Cell;
 import ie.gmit.sw.maze.ConnectionType;
 import ie.gmit.sw.maze.MazeGenerator;
+import ie.gmit.sw.threads.EntityFactory;
+
 public class GameRunner implements KeyListener{
-	private static final int MAZE_DIMENSION = 60;
+	private static final int MAZE_DIMENSION = 100;
 	private Cell[][] model;
 	private GameView view;
 	private int currentRow;
 	private int currentCol;
 	private Random rand = new Random();
-	private BlastEndedSkrewt skrewt;
 	private static Cell triwizardCup;
+	private static ExecutorService pool;
+	private static EntityFactory factory;
+	private static int enemyCount;
 	
 	public GameRunner() throws Exception{
 		MazeGenerator maze = new MazeGenerator(MAZE_DIMENSION, MAZE_DIMENSION);
 		model = maze.getMaze();
 		triwizardCup = model[MAZE_DIMENSION/2][MAZE_DIMENSION/2];
     	view = new GameView(model);
+    	
+    	enemyCount = (MAZE_DIMENSION * MAZE_DIMENSION)/40;
+    	pool = Executors.newFixedThreadPool(enemyCount);
+    	factory = EntityFactory.getInstance();
+    	
+    	IntStream.range(0, enemyCount).forEach(enem ->{
+    		int skrewtRow = rand.nextInt(MAZE_DIMENSION);
+        	int skrewtCol = rand.nextInt(MAZE_DIMENSION);
+    		Runnable entity = factory.getEntity(model[skrewtRow][skrewtCol], EnemyType.SKREWT, StrategyType.RANDOM);
+    		pool.submit(entity);
+    	});
     	
     	placePlayer();
     	placeItems();
@@ -58,23 +75,13 @@ public class GameRunner implements KeyListener{
     	currentCol = (int) (MAZE_DIMENSION * Math.random());
     	EnemyHeuristicCellComparator.setTargetColumn(currentCol);
     	EnemyHeuristicCellComparator.setTargetRow(currentRow);
-    	if(model[currentRow][currentCol].getSprite() == null){
-    		model[currentRow][currentCol].addSprite(new Player());
-    	}
-    	
-    	int skrewtRow = rand.nextInt(MAZE_DIMENSION);
-    	int skrewtCol = rand.nextInt(MAZE_DIMENSION);
-    	
-    	skrewt = new BlastEndedSkrewt(model[skrewtRow][skrewtCol]);
-
-		model[skrewtRow][skrewtCol].addSprite(skrewt);
-    	
+		model[currentRow][currentCol].setPlayer(new Player());
     	
     	updateView(); 		
 	}
 	
 	private void placeItems(){
-		IntStream.range(0, 20).forEach(i -> {
+		IntStream.range(0, 250).forEach(i -> {
 			int navrow = rand.nextInt(MAZE_DIMENSION);
 			int navcol = rand.nextInt(MAZE_DIMENSION);
 			while(model[navrow][navcol].getItem() != null){
@@ -92,31 +99,30 @@ public class GameRunner implements KeyListener{
 	}
 
     public void keyPressed(KeyEvent e) {
-    	Sprite player = model[currentRow][currentCol].getSprite();
-    	skrewt.move();
+    	Player player = model[currentRow][currentCol].getPlayer();
         if (e.getKeyCode() == KeyEvent.VK_RIGHT && currentCol < MAZE_DIMENSION - 1) {
         	if (model[currentRow][currentCol].getEastConnection().getType() == ConnectionType.PASSAGE) {
-        		model[currentRow][currentCol].removeSprite(player);
+        		model[currentRow][currentCol].setPlayer(null);
         		currentCol++;   	
-        		model[currentRow][currentCol].addSprite(player);
+        		model[currentRow][currentCol].setPlayer(player);
         	}
         }else if (e.getKeyCode() == KeyEvent.VK_LEFT && currentCol > 0) {
         	if (model[currentRow][currentCol].getWestConnection().getType() == ConnectionType.PASSAGE){
-        		model[currentRow][currentCol].removeSprite(player);
+        		model[currentRow][currentCol].setPlayer(null);
         		currentCol--;
-        		model[currentRow][currentCol].addSprite(player);
+        		model[currentRow][currentCol].setPlayer(player);
         	}
         }else if (e.getKeyCode() == KeyEvent.VK_UP && currentRow > 0) {
         	if (model[currentRow][currentCol].getNorthConnection().getType() == ConnectionType.PASSAGE){
-        		model[currentRow][currentCol].removeSprite(player);
+        		model[currentRow][currentCol].setPlayer(null);
         		currentRow--;
-        		model[currentRow][currentCol].addSprite(player);
+        		model[currentRow][currentCol].setPlayer(player);
         	}
         }else if (e.getKeyCode() == KeyEvent.VK_DOWN && currentRow < MAZE_DIMENSION - 1) {
         	if (model[currentRow][currentCol].getSouthConnection().getType() == ConnectionType.PASSAGE){
-        		model[currentRow][currentCol].removeSprite(player);
+        		model[currentRow][currentCol].setPlayer(null);
         		currentRow++;
-        		model[currentRow][currentCol].addSprite(player);
+        		model[currentRow][currentCol].setPlayer(player);
         	}
         }else if (e.getKeyCode() == KeyEvent.VK_Z){
         	view.toggleZoom();

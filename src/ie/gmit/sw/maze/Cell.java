@@ -3,6 +3,7 @@ package ie.gmit.sw.maze;
 import java.util.List;
 
 import ie.gmit.sw.gameassets.Item;
+import ie.gmit.sw.gameassets.Player;
 import ie.gmit.sw.gameassets.Sprite;
 
 public interface Cell {
@@ -35,4 +36,6 @@ public interface Cell {
 	public void setPathIndicator(boolean inpath);
 	public Item getItem();
 	public void setItem(Item item);
+	public Player getPlayer();
+	public void setPlayer(Player player);
 }

@@ -1,15 +1,14 @@
 package ie.gmit.sw.maze;
 
-import java.awt.image.BufferedImage;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import ie.gmit.sw.gameassets.Item;
+import ie.gmit.sw.gameassets.Player;
 import ie.gmit.sw.gameassets.Sprite;
 
 public class CellImpl extends AbstractCell {
 	private Item item;
+	private Player player;
 	private List<Sprite> sprites = new ArrayList<>();
 	private boolean pathIndicator;
 	
@@ -79,6 +78,16 @@ public class CellImpl extends AbstractCell {
 	@Override
 	public void setPathIndicator(boolean inpath) {
 		this.pathIndicator = inpath;
+	}
+
+	@Override
+	public Player getPlayer() {
+		return this.player;
+	}
+
+	@Override
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 	
 	

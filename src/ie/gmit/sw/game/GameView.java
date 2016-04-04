@@ -124,6 +124,10 @@ public class GameView extends JPanel implements ActionListener{
         		if(ch.getSprite() != null){
         			g2.drawImage(ch.getSprite().getImage(), x1, y1, null);
         		}
+        		
+        		if(ch.getPlayer() != null){
+        			g2.drawImage(ch.getPlayer().getImage(), x1, y1, null);
+        		}
         		   		
         	}
         }
