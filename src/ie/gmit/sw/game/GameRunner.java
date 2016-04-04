@@ -1,13 +1,17 @@
 package ie.gmit.sw.game;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.*;
 import java.util.Random;
-
+import java.util.stream.IntStream;
+import java.util.*;
 import javax.swing.*;
 
 import ie.gmit.sw.ai.EnemyHeuristicCellComparator;
 import ie.gmit.sw.gameassets.BlastEndedSkrewt;
+import ie.gmit.sw.gameassets.Item;
+import ie.gmit.sw.gameassets.Navigator;
 import ie.gmit.sw.gameassets.Player;
 import ie.gmit.sw.gameassets.Sprite;
 import ie.gmit.sw.maze.Cell;
@@ -24,13 +28,13 @@ public class GameRunner implements KeyListener{
 	private static Cell triwizardCup;
 	
 	public GameRunner() throws Exception{
-
 		MazeGenerator maze = new MazeGenerator(MAZE_DIMENSION, MAZE_DIMENSION);
 		model = maze.getMaze();
+		triwizardCup = model[MAZE_DIMENSION/2][MAZE_DIMENSION/2];
     	view = new GameView(model);
     	
     	placePlayer();
-    	
+    	placeItems();
     	Dimension d = new Dimension(GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
     	view.setPreferredSize(d);
     	view.setMinimumSize(d);
@@ -45,6 +49,8 @@ public class GameRunner implements KeyListener{
         f.setLocation(100,100);
         f.pack();
         f.setVisible(true);
+        
+        
 	}
 	
 	private void placePlayer(){   	
@@ -65,6 +71,19 @@ public class GameRunner implements KeyListener{
     	
     	
     	updateView(); 		
+	}
+	
+	private void placeItems(){
+		IntStream.range(0, 20).forEach(i -> {
+			int navrow = rand.nextInt(MAZE_DIMENSION);
+			int navcol = rand.nextInt(MAZE_DIMENSION);
+			while(model[navrow][navcol].getItem() != null){
+				navrow = rand.nextInt(MAZE_DIMENSION);
+				navcol = rand.nextInt(MAZE_DIMENSION);
+			}
+			Item temp = new Navigator(model[navrow][navcol]);
+			model[navrow][navcol].setItem(temp);
+		});
 	}
 	
 	private void updateView(){
@@ -104,9 +123,20 @@ public class GameRunner implements KeyListener{
         }else{
         	return;
         }
+        updateView();    
+        
+        if(model[currentRow][currentCol].getItem() != null){
+        	Item theItem = model[currentRow][currentCol].getItem();
+        	model[currentRow][currentCol].setItem(null);
+    		List<Cell> path = ((Navigator)theItem).findPath(model[currentRow][currentCol]);
+    		for(Cell elem : path){
+    			elem.setPathIndicator(true);
+    		}
+        	
+        }
         EnemyHeuristicCellComparator.setTargetColumn(currentCol);
         EnemyHeuristicCellComparator.setTargetRow(currentRow);
-        updateView();       
+           
     }
     public void keyReleased(KeyEvent e) {} //Ignore
 	public void keyTyped(KeyEvent e) {} //Ignore

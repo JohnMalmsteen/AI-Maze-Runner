@@ -24,14 +24,14 @@ public class GameView extends JPanel implements ActionListener{
 	private BufferedImage westWall;
 	private BufferedImage southWall;
 	private BufferedImage northWall;
-	private BufferedImage harry;
+
 	
 	public GameView(Cell[][] maze) throws Exception{
 		init();
 		this.maze = maze;
 		setBackground(Color.LIGHT_GRAY);
 		setDoubleBuffered(true);
-		timer = new Timer(300, this);
+		timer = new Timer(200, this);
 		timer.start();
 	}
 	
@@ -86,10 +86,14 @@ public class GameView extends JPanel implements ActionListener{
 
         			ch = maze[currentRow - cellpadding + row][currentCol - cellpadding + col];
         		}
-        		
-        		g2.setColor(new Color(30, 130, 30));
-    			g2.fillRect(x1, y1, size, size);
-    			
+        		if(ch.getPathIndicator()){
+        			g2.setColor(new Color(30, 30, 130));
+        			g2.fillRect(x1, y1, size, size);
+        		}else{
+        			g2.setColor(new Color(30, 130, 30));
+        			g2.fillRect(x1, y1, size, size);
+        		}
+
         		if(ch.getEastConnection().getType()==ConnectionType.WALL){
         			g2.drawImage(eastWall, x1, y1, null);
         		}
@@ -105,7 +109,9 @@ public class GameView extends JPanel implements ActionListener{
         		if(ch.getSouthConnection().getType()==ConnectionType.WALL){
         			g2.drawImage(southWall, x1, y1, null);
         		}
-        		
+        		if(ch.getItem()!=null){
+        			g2.drawImage(ch.getItem().getImage(), x1, y1, null);
+        		}
         		if(ch.getSprite() != null){
         			g2.drawImage(ch.getSprite().getImage(), x1, y1, null);
         		}
@@ -132,6 +138,5 @@ public class GameView extends JPanel implements ActionListener{
 		eastWall = ImageIO.read(new java.io.File("resources/eastwall.png"));
 		northWall = ImageIO.read(new java.io.File("resources/northwall.png"));
 		southWall = ImageIO.read(new java.io.File("resources/southwall.png"));
-		harry = ImageIO.read(new java.io.File("resources/harry.png"));
 	}
 }

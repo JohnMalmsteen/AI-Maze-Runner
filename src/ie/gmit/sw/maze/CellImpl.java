@@ -1,44 +1,28 @@
 package ie.gmit.sw.maze;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import ie.gmit.sw.gameassets.Item;
 import ie.gmit.sw.gameassets.Sprite;
 
 public class CellImpl extends AbstractCell {
-	private Item powerup;
-	private BufferedImage image;
+	private Item item;
 	private List<Sprite> sprites = new ArrayList<>();
 	private boolean pathIndicator;
 	
 	public CellImpl() {
-		try {
-			image = ImageIO.read(new java.io.File("resources/hedge.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 	}
 
-	public Item getPowerup() {
-		return powerup;
+	public Item getItem() {
+		return item;
 	}
 
-	public void setPowerup(Item powerup) {
-		this.powerup = powerup;
-	}
-
-	public BufferedImage getImage() {
-		return image;
-	}
-
-	public void setImage(BufferedImage image) {
-		this.image = image;
+	public void setItem(Item item) {
+		this.item = item;
 	}
 
 
@@ -73,7 +57,7 @@ public class CellImpl extends AbstractCell {
 
 	@Override
 	public double getDistanceToCell(int row, int col) {
-		double ans = Math.sqrt((Math.pow(((double)row-(double)this.row), 2) + Math.pow(((double)col-(double)this.col), 2)));
+		double ans = Math.abs((double)row-(double)this.row) - Math.abs((double)col-(double)this.col);
 		return ans;
 	}
 
