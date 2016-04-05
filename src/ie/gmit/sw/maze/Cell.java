@@ -38,4 +38,8 @@ public interface Cell {
 	public void setItem(Item item);
 	public Player getPlayer();
 	public void setPlayer(Player player);
+	public void setManaBottle(boolean hasMana);
+	public boolean hasManaBottle();
+	public void setWeapon(boolean hasweapon);
+	public boolean hasWeapon();
 }

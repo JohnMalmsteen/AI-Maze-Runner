@@ -28,7 +28,7 @@ import ie.gmit.sw.threads.EntityFactory;
 import ie.gmit.sw.threads.PathIllimunator;
 
 public class GameRunner implements KeyListener{
-	private static final int MAZE_DIMENSION = 50;
+	private static final int MAZE_DIMENSION = 200;
 	private Cell[][] model;
 	private GameView view;
 	private static int currentRow;
@@ -45,13 +45,16 @@ public class GameRunner implements KeyListener{
 		model = maze.getMaze();
 		triwizardCup = model[MAZE_DIMENSION/2][MAZE_DIMENSION/2];
     	view = new GameView(model);
-    	fightResolver = new FightResolver();
+    	fightResolver = FightResolver.getInstance();
     	skrewtCount = (MAZE_DIMENSION * MAZE_DIMENSION)/60;
     	pool = Executors.newCachedThreadPool();
     	factory = EntityFactory.getInstance();
    		
     	placePlayer();
     	placeItems();
+    	placeMana();
+    	placeWeapons();
+    	
     	Dimension d = new Dimension(GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
     	view.setPreferredSize(d);
     	view.setMinimumSize(d);
@@ -99,6 +102,34 @@ public class GameRunner implements KeyListener{
 		model[currentRow][currentCol].setPlayer(new Player());
     	System.out.println("currentRow = " + currentRow + " currentCol = " + currentCol);
     	updateView(); 		
+	}
+	
+	private void placeMana(){
+		int manaCount = (MAZE_DIMENSION*MAZE_DIMENSION)/50;
+		IntStream.range(0, manaCount).forEach(i -> {
+			int manarow = rand.nextInt(MAZE_DIMENSION);
+			int manacol = rand.nextInt(MAZE_DIMENSION);
+			while(model[manarow][manacol].getItem() != null || model[manarow][manacol].hasManaBottle()){
+				manarow = rand.nextInt(MAZE_DIMENSION);
+				manacol = rand.nextInt(MAZE_DIMENSION);
+			}
+
+			model[manarow][manacol].setManaBottle(true);
+		});
+	}
+	
+	private void placeWeapons(){
+		int weaponCount = (MAZE_DIMENSION*MAZE_DIMENSION)/70;
+		IntStream.range(0, weaponCount).forEach(i -> {
+			int wrow = rand.nextInt(MAZE_DIMENSION);
+			int wcol = rand.nextInt(MAZE_DIMENSION);
+			while(model[wrow][wcol].getItem() != null || model[wrow][wcol].hasManaBottle() || model[wrow][wcol].hasWeapon()){
+				wrow = rand.nextInt(MAZE_DIMENSION);
+				wcol = rand.nextInt(MAZE_DIMENSION);
+			}
+
+			model[wrow][wcol].setWeapon(true);
+		});
 	}
 	
 	private void placeItems(){
@@ -157,13 +188,32 @@ public class GameRunner implements KeyListener{
         }else{
 	        if(model[currentRow][currentCol].getSprite() != null){
 	        	Enemy enemy = (Enemy)model[currentRow][currentCol].getSprite();
-	        	int winchance = (int)fightResolver.resolveFight(enemy.getStrength(), player.getMana());
-	        	if(rand.nextInt(100) < winchance){
+	        	if(!Player.getWeapon()){
+	        		int winchance = (int)fightResolver.resolveFight(enemy.getStrength(), Player.getMana());
+		        	if(rand.nextInt(100) < winchance){
+		        		enemy.setAlive(false);
+		        		model[currentRow][currentCol].removeSprite(enemy);
+		        		Player.decrementMana();
+		        	}else{
+		        		GameView.setGameOver(true);
+		        	}
+	        	}
+	        	else{
 	        		enemy.setAlive(false);
 	        		model[currentRow][currentCol].removeSprite(enemy);
-	        	}else{
-	        		view.setGameOver(true);
+	        		Player.setWeapon(false);
 	        	}
+	        }
+	        
+	        if(model[currentRow][currentCol].hasWeapon()){
+	        	if(!Player.getWeapon()){
+	        		Player.setWeapon(true);
+	        		model[currentRow][currentCol].setWeapon(false);
+	        	}
+	        }
+	        if(model[currentRow][currentCol].hasManaBottle()){
+	        	Player.incrementMana();
+	        	model[currentRow][currentCol].setManaBottle(false);
 	        }
 	        
 	        if(model[currentRow][currentCol].getItem() != null){

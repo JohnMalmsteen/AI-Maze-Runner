@@ -23,7 +23,7 @@ public class DepthFirstMovementStrategy implements MovementStrategy {
 		this.rep = rep;
 	}
 	
-	public void move(){
+	public Cell move(){
 		if(!stack.isEmpty()){
 			Cell current = stack.peek();
 			
@@ -50,10 +50,12 @@ public class DepthFirstMovementStrategy implements MovementStrategy {
 				stack.peek().addSprite(rep);
 				visited.add(stack.peek());
 				holder=stack.peek();
+				return holder;
 			}else{
 				current.removeSprite(rep);;
 				holder = stack.pop();
 				stack.peek().addSprite(rep);
+				return stack.peek();
 			}
 			
 		}else{
@@ -61,6 +63,7 @@ public class DepthFirstMovementStrategy implements MovementStrategy {
 			visited.clear();
 			stack.push(holder);
 			move();
+			return holder;
 		}
 	}
 	

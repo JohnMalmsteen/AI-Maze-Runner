@@ -37,7 +37,7 @@ public class BestFirstMovementStrategy implements MovementStrategy{
 	}
 	
 	@Override
-	public void move() {
+	public Cell move() {
 		//I want to calculate the route every 5 turns, or if its the first turn or if I'm close enough to the target
 		if(first || Math.abs(holder.getDistanceToCell(GameRunner.getCurrentRow(), GameRunner.getCurrentCol())) < 5.0 || i++ % 5 == 0)
 			path = getPath(holder);
@@ -52,6 +52,7 @@ public class BestFirstMovementStrategy implements MovementStrategy{
 		holder.removeSprite(rep);
 		target.addSprite(rep);
 		holder = target;
+		return holder;
 	}
 
 	private List<Cell> getPath(Cell initial){

@@ -1,7 +1,9 @@
 package ie.gmit.sw.ai;
 
+import ie.gmit.sw.maze.Cell;
+
 public interface MovementStrategy {
 
-	void move();
+	public Cell move();
 
 }

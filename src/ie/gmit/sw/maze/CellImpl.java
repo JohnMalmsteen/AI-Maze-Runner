@@ -8,10 +8,11 @@ import ie.gmit.sw.gameassets.Sprite;
 
 public class CellImpl extends AbstractCell {
 	private Item item;
+	private boolean weapon =  false;
 	private Player player;
 	private List<Sprite> sprites = new ArrayList<>();
-	private boolean pathIndicator;
-	
+	private boolean pathIndicator = false;;
+	private boolean manabottle = false; 
 	public CellImpl() {
 	
 	}
@@ -89,7 +90,22 @@ public class CellImpl extends AbstractCell {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-	
-	
 
+	@Override
+	public void setManaBottle(boolean hasMana) {
+		this.manabottle = hasMana;
+	}
+
+	@Override
+	public boolean hasManaBottle() {
+		return manabottle;
+	}
+	
+	public boolean hasWeapon(){
+		return weapon;
+	}
+	
+	public void setWeapon(boolean hasweapon){
+		this.weapon = hasweapon;
+	}
 }

@@ -18,7 +18,7 @@ public class RandomMovementStrategy implements MovementStrategy {
 	}
 	
 	@Override
-	public void move() {
+	public Cell move() {
 		List<Cell> options = new ArrayList<>();
 		if(current.getNorthConnection().getType() == ConnectionType.PASSAGE){
 			options.add(current.getNorth());
@@ -39,6 +39,7 @@ public class RandomMovementStrategy implements MovementStrategy {
 		current.removeSprite(rep);
 		current = options.get(rand.nextInt(options.size()));
 		current.addSprite(rep);
+		return current;
 	}
 
 }

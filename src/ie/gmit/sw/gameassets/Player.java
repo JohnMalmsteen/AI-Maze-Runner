@@ -1,48 +1,61 @@
 package ie.gmit.sw.gameassets;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
+
+import ie.gmit.sw.maze.Cell;
 
 public class Player implements Sprite {
 	
 	private BufferedImage image;
-	private int mana = 0;
+	private BufferedImage altImage;
+	private static int mana = 0;
 	private int health = 3;
-	private Weapon weapon = null;
+	private static boolean weapon = false;
 	
 	public Player(){
 		try {
 			image = ImageIO.read(new java.io.File("resources/harry.png"));
+			altImage = ImageIO.read(new File("resources/altharry.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	@Override
-	public void move() {
+	public Cell move() {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 	@Override
 	public BufferedImage getImage() {
-		return this.image;
+		if(weapon)
+			return this.altImage;
+		else
+			return this.image;
 	}
 	@Override
 	public void setImage(BufferedImage image) {
 		this.image = image;
 	}
 	
-
-	public int getMana() {
+	public static void incrementMana(){
+		mana += 20;
+	}
+	
+	public static void decrementMana(){
+		mana = Math.max(mana - 20, 0);
+	}
+	public static int getMana() {
 		return mana;
 	}
-	public void setMana(int mana) {
-		this.mana = mana;
+	
+	public static void setMana(int man) {
+		mana = man;
 	}
 	public int getHealth() {
 		return health;
@@ -50,11 +63,13 @@ public class Player implements Sprite {
 	public void setHealth(int health) {
 		this.health = health;
 	}
-	public Weapon getWeapon() {
-		return weapon;
+
+	public static void setWeapon(boolean hasweapon){
+		weapon = hasweapon;
 	}
-	public void setWeapon(Weapon weapon) {
-		this.weapon = weapon;
+	
+	public static boolean getWeapon(){
+		return weapon;
 	}
 
 }

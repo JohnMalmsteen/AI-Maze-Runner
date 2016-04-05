@@ -6,6 +6,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import ie.gmit.sw.maze.Cell;
+
 public abstract class Enemy implements Sprite {
 	private BufferedImage image;
 	private int strength;
@@ -18,8 +20,8 @@ public abstract class Enemy implements Sprite {
 		}
 	}
 	
-	public void move() {
-
+	public Cell move() {
+		return null;
 		
 	}
 

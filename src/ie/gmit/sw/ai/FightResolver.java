@@ -4,8 +4,10 @@ import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
 
 public class FightResolver {
-	FIS fis;
-	public FightResolver() {
+	private static FightResolver resolver = new FightResolver();
+	
+	private static FIS fis;
+	private FightResolver() {
 	      // Load from 'FCL' file
         String fileName = "fcl/fight.fcl";
         fis = FIS.load(fileName,true);
@@ -17,6 +19,10 @@ public class FightResolver {
         }
 
        
+	}
+	
+	public static FightResolver getInstance(){
+		return resolver;
 	}
 	
 	public double resolveFight(double opponent, double mana){

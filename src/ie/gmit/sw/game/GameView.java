@@ -8,8 +8,10 @@ import java.io.IOException;
 
 import javax.imageio.*;
 import javax.swing.*;
+import javax.swing.text.html.HTMLDocument.HTMLReader.BlockAction;
 
 import ie.gmit.sw.gameassets.BlastEndedSkrewt;
+import ie.gmit.sw.gameassets.Player;
 import ie.gmit.sw.maze.Cell;
 import ie.gmit.sw.maze.ConnectionType;
 public class GameView extends JPanel implements ActionListener{
@@ -28,7 +30,12 @@ public class GameView extends JPanel implements ActionListener{
 	private BufferedImage southWall;
 	private BufferedImage northWall;
 	private BufferedImage trophy;
-	private boolean gameOver = false;
+	private BufferedImage mana;
+	private BufferedImage gameoverimage;
+	private BufferedImage congrats;
+	private BufferedImage smallmana;
+	private BufferedImage sword;
+	private static boolean gameOver = false;
 	private boolean playerWins = false;
 	
 	public GameView(Cell[][] maze) throws Exception{
@@ -63,73 +70,95 @@ public class GameView extends JPanel implements ActionListener{
 	public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
-              
-        cellspan = zoomOut ? maze.length : 5;       
-        int size = zoomOut ? (DEFAULT_VIEW_SIZE/cellspan)+1 : (DEFAULT_VIEW_SIZE/cellspan);
-        g2.drawRect(0, 0, GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
         
-        for(int row = 0; row < cellspan; row++) {
-        	for (int col = 0; col < cellspan; col++){  
-        		int x1 = col * size;
-        		int y1 = row * size;
-        		
-        		Cell ch = null;
-       		
-        		if (zoomOut){
-        			ch = maze[row][col];
-        			if (row == currentRow && col == currentCol){
-        				g2.setColor(Color.YELLOW);
-        				g2.fillRect(x1, y1, size, size);
-        				continue;
-        			}
-        			if(ch.getSprite() != null){
-        				g2.setColor(Color.RED);
-        				g2.fillRect(x1, y1, size, size);
-        				continue;
-        			}
-        		}else{
-
-        			ch = maze[currentRow - cellpadding + row][currentCol - cellpadding + col];
-        		}
-        		if(ch.getPathIndicator()){
-        			g2.setColor(new Color(30, 30, 130));
-        			g2.fillRect(x1, y1, size, size);
-        		}else{
-        			g2.setColor(new Color(30, 130, 30));
-        			g2.fillRect(x1, y1, size, size);
-        		}
-
-        		if(ch.getEastConnection().getType()==ConnectionType.WALL){
-        			g2.drawImage(eastWall, x1, y1, null);
-        		}
-        		
-        		if(ch.getWestConnection().getType()==ConnectionType.WALL){
-        			g2.drawImage(westWall, x1, y1, null);
-        		}
-        		
-        		if(ch.getNorthConnection().getType()==ConnectionType.WALL){
-        			g2.drawImage(northWall, x1, y1, null);
-        		}
-        		
-        		if(ch.getSouthConnection().getType()==ConnectionType.WALL){
-        			g2.drawImage(southWall, x1, y1, null);
-        		}
-        		if(ch.getItem()!=null){
-        			g2.drawImage(ch.getItem().getImage(), x1, y1, null);
-        		}
-        		
-        		if(ch == GameRunner.getTriwizardCup()){
-					g2.drawImage(trophy, x1, y1, null);
-        		}
-        		
-        		if(ch.getSprite() != null){
-        			g2.drawImage(ch.getSprite().getImage(), x1, y1, null);
-        		}
-        		
-        		if(ch.getPlayer() != null){
-        			g2.drawImage(ch.getPlayer().getImage(), x1, y1, null);
-        		}
-        		   		
+        if(!gameOver && !playerWins){  
+	        cellspan = zoomOut ? maze.length : 5;       
+	        int size = zoomOut ? (DEFAULT_VIEW_SIZE/cellspan)+1 : (DEFAULT_VIEW_SIZE/cellspan);
+	        g2.drawRect(0, 0, GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
+	        
+	        for(int row = 0; row < cellspan; row++) {
+	        	for (int col = 0; col < cellspan; col++){  
+	        		int x1 = col * size;
+	        		int y1 = row * size;
+	        		
+	        		Cell ch = null;
+	       		
+	        		if (zoomOut){
+	        			ch = maze[row][col];
+	        			if (row == currentRow && col == currentCol){
+	        				g2.setColor(Color.YELLOW);
+	        				g2.fillRect(x1, y1, size, size);
+	        				continue;
+	        			}
+	        			if(ch.getSprite() != null){
+	        				g2.setColor(Color.RED);
+	        				g2.fillRect(x1, y1, size, size);
+	        				continue;
+	        			}
+	        		}else{
+	
+	        			ch = maze[currentRow - cellpadding + row][currentCol - cellpadding + col];
+	        		}
+	        		if(ch.getPathIndicator()){
+	        			g2.setColor(new Color(30, 30, 130));
+	        			g2.fillRect(x1, y1, size, size);
+	        		}else{
+	        			g2.setColor(new Color(30, 130, 30));
+	        			g2.fillRect(x1, y1, size, size);
+	        		}
+	
+	        		if(ch.getEastConnection().getType()==ConnectionType.WALL){
+	        			g2.drawImage(eastWall, x1, y1, null);
+	        		}
+	        		
+	        		if(ch.getWestConnection().getType()==ConnectionType.WALL){
+	        			g2.drawImage(westWall, x1, y1, null);
+	        		}
+	        		
+	        		if(ch.getNorthConnection().getType()==ConnectionType.WALL){
+	        			g2.drawImage(northWall, x1, y1, null);
+	        		}
+	        		
+	        		if(ch.getSouthConnection().getType()==ConnectionType.WALL){
+	        			g2.drawImage(southWall, x1, y1, null);
+	        		}
+	        		if(ch.getItem()!=null){
+	        			g2.drawImage(ch.getItem().getImage(), x1, y1, null);
+	        		}
+	        		
+	        		if(ch == GameRunner.getTriwizardCup()){
+						g2.drawImage(trophy, x1, y1, null);
+	        		}
+	        		
+	        		if(ch.hasManaBottle()){
+	        			g2.drawImage(mana, x1, y1, null);
+	        		}
+	        		
+	        		if(ch.hasWeapon()){
+	        			g2.drawImage(sword, x1, y1, null);
+	        		}
+	        		
+	        		if(ch.getSprite() != null){
+	        			g2.drawImage(ch.getSprite().getImage(), x1, y1, null);
+	        		}
+	        		
+	        		if(ch.getPlayer() != null){
+	        			g2.drawImage(ch.getPlayer().getImage(), x1, y1, null);
+	        		}
+	        		   		
+	        	}
+	        }
+	        System.out.println(Player.getMana()/20);
+	        for(int i = 0; i < (Player.getMana()/20); i++){
+	        	g2.drawImage(smallmana, i*(size/3), 0, null);
+	        }
+        }else{
+        	if(gameOver){
+	        	g2.setColor(Color.WHITE);
+	        	g2.drawRect(0, 0, GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
+	        	g2.drawImage(gameoverimage, 0, 0, null);	
+        	}else{
+        		g2.drawImage(congrats, 0, 0, null);
         	}
         }
 	}
@@ -148,19 +177,24 @@ public class GameView extends JPanel implements ActionListener{
 	}
 	
 	private void init() throws Exception{
-		westWall = ImageIO.read(new java.io.File("resources/westwall.png"));
-		eastWall = ImageIO.read(new java.io.File("resources/eastwall.png"));
-		northWall = ImageIO.read(new java.io.File("resources/northwall.png"));
-		southWall = ImageIO.read(new java.io.File("resources/southwall.png"));
+		westWall = ImageIO.read(new File("resources/westwall.png"));
+		eastWall = ImageIO.read(new File("resources/eastwall.png"));
+		northWall = ImageIO.read(new File("resources/northwall.png"));
+		southWall = ImageIO.read(new File("resources/southwall.png"));
 		trophy = ImageIO.read(new File("resources/trophy.png"));
+		mana = ImageIO.read(new File("resources/mana.png"));
+		gameoverimage = ImageIO.read(new File("resources/gameover.png"));
+		congrats = ImageIO.read(new File("resources/congrats.png"));
+		smallmana = ImageIO.read(new File("resources/smallmana.png"));
+		sword = ImageIO.read(new File("resources/sword.png"));
 	}
 
 	public boolean isGameOver() {
 		return gameOver;
 	}
 
-	public void setGameOver(boolean gameOver) {
-		this.gameOver = gameOver;
+	public static void setGameOver(boolean over) {
+		gameOver = over;
 	}
 
 	public boolean isPlayerWins() {

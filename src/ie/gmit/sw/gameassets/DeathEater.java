@@ -36,8 +36,8 @@ public class DeathEater extends Enemy {
 	}
 	
 	@Override
-	public void move() {
-		this.strategy.move();
+	public Cell move() {
+		return this.strategy.move();
 	}
 
 	@Override
