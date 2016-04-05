@@ -79,7 +79,7 @@ The compass spell uses the A* algorithm to compute the optimal path to the triwi
 
 * Maze Generation
 
-|![Map](http://i.imgur.com/mK515yh.png)
+|![Map](http://i.imgur.com/OSYG0Z8.png)
 I did a custom maze generation algorithm for this project, I started out using a backtracking recursive depth first spanning tree maze. This maze type has the advantage of making every node accessible but it also means there is only one path to everything so I also added in a function that randomly removes walls between cells.
 
 The composition of my maze is Cell objects which contain refrences to their neighbour cells and whether the connector between them is a wall or a passage.
