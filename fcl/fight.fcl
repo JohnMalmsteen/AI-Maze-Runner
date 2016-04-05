@@ -1,0 +1,45 @@
+FUNCTION_BLOCK maze
+
+	VAR_INPUT
+		mana : REAL;
+		opponent : REAL;
+	END_VAR
+	
+	VAR_OUTPUT
+		victory : REAL;
+	END_VAR
+	
+	FUZZIFY opponent
+		TERM pitiful := gauss 0 15;
+		TERM formidable := gauss 50 15;
+		TERM legendary := gauss 100 15;
+	END_FUZZIFY
+	
+	FUZZIFY mana
+		TERM nonexistent := gauss 0 15;
+		TERM dwindling := gauss 50 15;
+		TERM brimming := gauss 100 15;
+	END_FUZZIFY
+	
+	DEFUZZIFY victory
+		TERM low := gauss 0 15;
+		TERM normal := gauss 50 15;
+		TERM high := gauss 90 15;
+		TERM assured := gauss 120 15;
+		METHOD : COG;
+		DEFAULT := 0;
+	END_DEFUZZIFY
+	
+	RULEBLOCK No1
+		AND : MIN;
+		ACT : MIN;
+		ACCU : MAX;
+		RULE 1 : IF opponent IS pitiful THEN victory IS normal;
+		RULE 2 : IF opponent IS formidable AND mana IS nonexistent THEN victory IS low;
+		RULE 3 : IF opponent IS legendary AND mana IS dwindling THEN victory IS normal;
+		RULE 4 : IF opponent IS legendary AND mana IS brimming THEN victory IS high;
+		RULE 5 : IF opponent IS pitiful AND mana IS brimming THEN victory IS assured;
+	END_RULEBLOCK
+	
+
+END_FUNCTION_BLOCK

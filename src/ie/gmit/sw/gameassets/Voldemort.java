@@ -26,7 +26,7 @@ public class Voldemort extends Enemy {
 			strategy = new RandomMovementStrategy(initial, this);
 		}
 		
-		this.setStrength("LEGENDARY");
+		this.setStrength(95);
 		try {
 			BufferedImage image = ImageIO.read(new File("resources/voldemort.png"));
 			setImage(image);

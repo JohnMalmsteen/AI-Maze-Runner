@@ -10,7 +10,9 @@ import javax.imageio.ImageIO;
 public class Player implements Sprite {
 	
 	private BufferedImage image;
-	private List<Item> Items = new ArrayList<Item>();
+	private int mana = 0;
+	private int health = 3;
+	private Weapon weapon = null;
 	
 	public Player(){
 		try {
@@ -33,6 +35,26 @@ public class Player implements Sprite {
 	@Override
 	public void setImage(BufferedImage image) {
 		this.image = image;
+	}
+	
+
+	public int getMana() {
+		return mana;
+	}
+	public void setMana(int mana) {
+		this.mana = mana;
+	}
+	public int getHealth() {
+		return health;
+	}
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	public Weapon getWeapon() {
+		return weapon;
+	}
+	public void setWeapon(Weapon weapon) {
+		this.weapon = weapon;
 	}
 
 }

@@ -11,20 +11,24 @@ import java.util.*;
 import javax.swing.*;
 
 import ie.gmit.sw.ai.EnemyHeuristicCellComparator;
+import ie.gmit.sw.ai.FightResolver;
 import ie.gmit.sw.ai.StrategyType;
 import ie.gmit.sw.gameassets.BlastEndedSkrewt;
+import ie.gmit.sw.gameassets.Enemy;
 import ie.gmit.sw.gameassets.EnemyType;
 import ie.gmit.sw.gameassets.Item;
 import ie.gmit.sw.gameassets.Navigator;
 import ie.gmit.sw.gameassets.Player;
 import ie.gmit.sw.gameassets.Sprite;
+import ie.gmit.sw.gameassets.Voldemort;
 import ie.gmit.sw.maze.Cell;
 import ie.gmit.sw.maze.ConnectionType;
 import ie.gmit.sw.maze.MazeGenerator;
 import ie.gmit.sw.threads.EntityFactory;
+import ie.gmit.sw.threads.PathIllimunator;
 
 public class GameRunner implements KeyListener{
-	private static final int MAZE_DIMENSION = 30;
+	private static final int MAZE_DIMENSION = 50;
 	private Cell[][] model;
 	private GameView view;
 	private static int currentRow;
@@ -34,40 +38,18 @@ public class GameRunner implements KeyListener{
 	private static ExecutorService pool;
 	private static EntityFactory factory;
 	private static int skrewtCount;
-	private Sprite skrewt;
+	private static FightResolver fightResolver;
 	
 	public GameRunner() throws Exception{
 		MazeGenerator maze = new MazeGenerator(MAZE_DIMENSION, MAZE_DIMENSION);
 		model = maze.getMaze();
 		triwizardCup = model[MAZE_DIMENSION/2][MAZE_DIMENSION/2];
     	view = new GameView(model);
-    	
-    	skrewtCount = (MAZE_DIMENSION * MAZE_DIMENSION)/40;
-    	pool = Executors.newFixedThreadPool(skrewtCount);
+    	fightResolver = new FightResolver();
+    	skrewtCount = (MAZE_DIMENSION * MAZE_DIMENSION)/60;
+    	pool = Executors.newCachedThreadPool();
     	factory = EntityFactory.getInstance();
-    	
-//    	IntStream.range(0, skrewtCount).forEach(enem ->{
-//    		int skrewtRow = rand.nextInt(MAZE_DIMENSION);
-//        	int skrewtCol = rand.nextInt(MAZE_DIMENSION);
-//    		Runnable entity = factory.getEntity(model[skrewtRow][skrewtCol], EnemyType.SKREWT, StrategyType.RANDOM);
-//    		pool.submit(entity);
-//    		
-//    		if(enem%2 == 0){
-//    			int derow = rand.nextInt(MAZE_DIMENSION);
-//    			int decol = rand.nextInt(MAZE_DIMENSION);
-//    			Runnable dentity = factory.getEntity(model[derow][decol], EnemyType.DEATHEATER, StrategyType.DEPTH_FIRST);
-//    			pool.submit(dentity);
-//    		}
-//    		
-//    		if(enem%5 == 0){
-//    			
-//    		}
-//    		
-//    	});
-    	
-    	
-    	
-		
+   		
     	placePlayer();
     	placeItems();
     	Dimension d = new Dimension(GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
@@ -85,9 +67,27 @@ public class GameRunner implements KeyListener{
         f.pack();
         f.setVisible(true);
         
-        int skrewtRow = rand.nextInt(MAZE_DIMENSION);
-    	int skrewtCol = rand.nextInt(MAZE_DIMENSION);
-		skrewt = new BlastEndedSkrewt(model[skrewtRow][skrewtCol], StrategyType.BEST_FIRST);
+        IntStream.range(0, skrewtCount).forEach(enem ->{
+    		int skrewtRow = rand.nextInt(MAZE_DIMENSION);
+        	int skrewtCol = rand.nextInt(MAZE_DIMENSION);
+    		Runnable entity = factory.getEntity(model[skrewtRow][skrewtCol], EnemyType.SKREWT, StrategyType.RANDOM);
+    		pool.submit(entity);
+    		
+    		if(enem%2 == 0){
+    			int derow = rand.nextInt(MAZE_DIMENSION);
+    			int decol = rand.nextInt(MAZE_DIMENSION);
+    			Runnable dentity = factory.getEntity(model[derow][decol], EnemyType.DEATHEATER, StrategyType.DEPTH_FIRST);
+    			pool.submit(dentity);
+    		}
+    		
+    		if(enem%20 == 0){
+    			int vRow = rand.nextInt(MAZE_DIMENSION);
+    	    	int vCol = rand.nextInt(MAZE_DIMENSION);
+    			Runnable ventity = factory.getEntity(model[vRow][vCol], EnemyType.VOLDEMORT, StrategyType.BEST_FIRST);
+    			pool.submit(ventity);
+    		}
+    		
+    	});
     	
 	}
 	
@@ -102,7 +102,7 @@ public class GameRunner implements KeyListener{
 	}
 	
 	private void placeItems(){
-		int navCount = (MAZE_DIMENSION*MAZE_DIMENSION)/30;
+		int navCount = (MAZE_DIMENSION*MAZE_DIMENSION)/50;
 		IntStream.range(0, navCount).forEach(i -> {
 			int navrow = rand.nextInt(MAZE_DIMENSION);
 			int navcol = rand.nextInt(MAZE_DIMENSION);
@@ -151,21 +151,31 @@ public class GameRunner implements KeyListener{
         }else{
         	return;
         }
-        updateView();    
-        
-        if(model[currentRow][currentCol].getItem() != null){
-        	Item theItem = model[currentRow][currentCol].getItem();
-        	model[currentRow][currentCol].setItem(null);
-    		List<Cell> path = ((Navigator)theItem).findPath(model[currentRow][currentCol]);
-    		for(Cell elem : path){
-    			elem.setPathIndicator(true);
-    		}
-        	
+        updateView();  
+        if(model[currentRow][currentCol] == triwizardCup){
+        	view.setPlayerWins(true);
+        }else{
+	        if(model[currentRow][currentCol].getSprite() != null){
+	        	Enemy enemy = (Enemy)model[currentRow][currentCol].getSprite();
+	        	int winchance = (int)fightResolver.resolveFight(enemy.getStrength(), player.getMana());
+	        	if(rand.nextInt(100) < winchance){
+	        		enemy.setAlive(false);
+	        		model[currentRow][currentCol].removeSprite(enemy);
+	        	}else{
+	        		view.setGameOver(true);
+	        	}
+	        }
+	        
+	        if(model[currentRow][currentCol].getItem() != null){
+	        	Item theItem = model[currentRow][currentCol].getItem();
+	        	model[currentRow][currentCol].setItem(null);
+	    		List<Cell> path = ((Navigator)theItem).findPath(model[currentRow][currentCol]);
+	    		Runnable pathIlluminator = new PathIllimunator(path);
+	    		pool.submit(pathIlluminator);
+	        }
+	        EnemyHeuristicCellComparator.setTargetColumn(currentCol);
+	        EnemyHeuristicCellComparator.setTargetRow(currentRow);
         }
-        EnemyHeuristicCellComparator.setTargetColumn(currentCol);
-        EnemyHeuristicCellComparator.setTargetRow(currentRow);
-        skrewt.move();
-           
     }
     public void keyReleased(KeyEvent e) {} //Ignore
 	public void keyTyped(KeyEvent e) {} //Ignore

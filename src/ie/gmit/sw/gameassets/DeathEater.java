@@ -26,7 +26,7 @@ public class DeathEater extends Enemy {
 			strategy = new RandomMovementStrategy(initial, this);
 		}
 		
-		this.setStrength("FORMIDABLE");
+		this.setStrength(45);
 		try {
 			BufferedImage image = ImageIO.read(new File("resources/snape.png"));
 			setImage(image);

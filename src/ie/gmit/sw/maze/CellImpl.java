@@ -56,7 +56,7 @@ public class CellImpl extends AbstractCell {
 
 	@Override
 	public double getDistanceToCell(int row, int col) {
-		double ans = Math.abs((double)row-(double)this.row) - Math.abs((double)col-(double)this.col);
+		double ans = Math.abs(Math.abs((double)row-(double)this.row) - Math.abs((double)col-(double)this.col));
 		return ans;
 	}
 

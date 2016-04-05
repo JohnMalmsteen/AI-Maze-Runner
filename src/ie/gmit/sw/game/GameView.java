@@ -28,7 +28,8 @@ public class GameView extends JPanel implements ActionListener{
 	private BufferedImage southWall;
 	private BufferedImage northWall;
 	private BufferedImage trophy;
-
+	private boolean gameOver = false;
+	private boolean playerWins = false;
 	
 	public GameView(Cell[][] maze) throws Exception{
 		init();
@@ -81,7 +82,7 @@ public class GameView extends JPanel implements ActionListener{
         				g2.fillRect(x1, y1, size, size);
         				continue;
         			}
-        			if(ch.getSprite() != null && ch.getSprite().getClass() == BlastEndedSkrewt.class){
+        			if(ch.getSprite() != null){
         				g2.setColor(Color.RED);
         				g2.fillRect(x1, y1, size, size);
         				continue;
@@ -152,5 +153,21 @@ public class GameView extends JPanel implements ActionListener{
 		northWall = ImageIO.read(new java.io.File("resources/northwall.png"));
 		southWall = ImageIO.read(new java.io.File("resources/southwall.png"));
 		trophy = ImageIO.read(new File("resources/trophy.png"));
+	}
+
+	public boolean isGameOver() {
+		return gameOver;
+	}
+
+	public void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
+	}
+
+	public boolean isPlayerWins() {
+		return playerWins;
+	}
+
+	public void setPlayerWins(boolean playerWins) {
+		this.playerWins = playerWins;
 	}
 }

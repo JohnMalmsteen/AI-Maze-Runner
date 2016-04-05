@@ -26,7 +26,7 @@ public class BlastEndedSkrewt extends Enemy {
 			strategy = new RandomMovementStrategy(initial, this);
 		}
 		
-		this.setStrength("FEEBLE");
+		this.setStrength(0);
 		try {
 			BufferedImage image = ImageIO.read(new File("resources/skrewt.png"));
 			setImage(image);

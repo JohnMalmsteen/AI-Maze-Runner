@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public abstract class Enemy implements Sprite {
 	private BufferedImage image;
-	private String strength;
+	private int strength;
 	private boolean alive = true;
 	public Enemy(){
 		try {
@@ -31,11 +31,11 @@ public abstract class Enemy implements Sprite {
 		this.image = image;
 	}
 
-	public String getStrength() {
+	public int getStrength() {
 		return strength;
 	}
 
-	public void setStrength(String strength) {
+	public void setStrength(int strength) {
 		this.strength = strength;
 	}
 
