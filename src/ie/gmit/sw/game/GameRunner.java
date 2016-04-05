@@ -28,7 +28,7 @@ import ie.gmit.sw.threads.MazeChanger;
 import ie.gmit.sw.threads.PathIllimunator;
 
 public class GameRunner implements KeyListener{
-	private static final int MAZE_DIMENSION = 100;
+	private static final int MAZE_DIMENSION = 150;
 	private Cell[][] model;
 	private GameView view;
 	private static int currentRow;
