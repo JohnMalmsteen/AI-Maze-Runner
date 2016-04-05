@@ -112,19 +112,19 @@ public class GameView extends JPanel implements ActionListener{
 	        		}
 	
 	        		if(ch.getEastConnection().getType()==ConnectionType.WALL){
-	        			g2.drawImage(eastWall, x1, y1, null);
+	        			g2.drawImage(eastWall, x1, y1, size, size, null);
 	        		}
 	        		
 	        		if(ch.getWestConnection().getType()==ConnectionType.WALL){
-	        			g2.drawImage(westWall, x1, y1, null);
+	        			g2.drawImage(westWall, x1, y1, size, size, null);
 	        		}
 	        		
 	        		if(ch.getNorthConnection().getType()==ConnectionType.WALL){
-	        			g2.drawImage(northWall, x1, y1, null);
+	        			g2.drawImage(northWall, x1, y1, size, size, null);
 	        		}
 	        		
 	        		if(ch.getSouthConnection().getType()==ConnectionType.WALL){
-	        			g2.drawImage(southWall, x1, y1, null);
+	        			g2.drawImage(southWall, x1, y1, size, size, null);
 	        		}
 	        		if(ch.getItem()!=null){
 	        			g2.drawImage(ch.getItem().getImage(), x1, y1, null);
@@ -134,37 +134,37 @@ public class GameView extends JPanel implements ActionListener{
 	        		}
 	        		
 	        		if(ch == GameRunner.getTriwizardCup()){
-						g2.drawImage(trophy, x1, y1, null);
+						g2.drawImage(trophy, x1, y1,size, size, null);
 	        		}
 	        		
 	        		if(ch.hasManaBottle()){
-	        			g2.drawImage(mana, x1, y1, null);
+	        			g2.drawImage(mana, x1, y1, size, size, null);
 	        		}
 	        		
 	        		if(ch.hasWeapon()){
-	        			g2.drawImage(sword, x1, y1, null);
+	        			g2.drawImage(sword, x1, y1, size, size, null);
 	        		}
 	        		
 	        		if(ch.getSprite() != null){
-	        			g2.drawImage(ch.getSprite().getImage(), x1, y1, null);
+	        			g2.drawImage(ch.getSprite().getImage(), x1, y1, size, size, null);
 	        		}
 	        		
 	        		if(ch.getPlayer() != null){
-	        			g2.drawImage(ch.getPlayer().getImage(), x1, y1, null);
+	        			g2.drawImage(ch.getPlayer().getImage(), x1, y1, size, size, null);
 	        		}
 	        		   		
 	        	}
 	        }
 	        for(int i = 0; i < (Player.getMana()/20); i++){
-	        	g2.drawImage(smallmana, i*(size/3), 0, null);
+	        	g2.drawImage(smallmana, i*20, 0, null);
 	        }
         }else{
         	if(gameOver){
 	        	g2.setColor(Color.WHITE);
 	        	g2.drawRect(0, 0, GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
-	        	g2.drawImage(gameoverimage, 0, 0, null);	
+	        	g2.drawImage(gameoverimage, 0, 0, DEFAULT_VIEW_SIZE, DEFAULT_VIEW_SIZE, null);	
         	}else{
-        		g2.drawImage(congrats, 0, 0, null);
+        		g2.drawImage(congrats, 0, 0, DEFAULT_VIEW_SIZE, DEFAULT_VIEW_SIZE, null);
         	}
         }
 	}
