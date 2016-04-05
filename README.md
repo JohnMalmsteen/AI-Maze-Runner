@@ -110,5 +110,12 @@ All of the enemies are threaded and there are also some other threaded activitie
 
 6 - How to Deploy
 ---
-This project require that you have Java 1.8 and the Jfuzzylogic jar which is downloadable [here](http://jfuzzylogic.sourceforge.net/html/index.html)
+This project require that you have Java 1.8 and the Jfuzzylogic jar which is downloadable [here](http://jfuzzylogic.sourceforge.net/html/index.html) (I have added this jar file to the github project now for your convenience)
 the main class is ie.gmit.sw.game.GameRunner
+
+I have now added the built jar file for convenience, it can be run from the main folder (it still needs to be beside libs/ fcl/ and resources/) 
+
+```sh
+$ java -cp Maze.jar:libs/jFuzzyLogic.jar ie.gmit.sw.game.GameRunner
+```
+
