@@ -1,7 +1,6 @@
 package ie.gmit.sw.ai;
 
 import net.sourceforge.jFuzzyLogic.FIS;
-import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
 
 public class FightResolver {
 	private static FightResolver resolver = new FightResolver();
@@ -29,7 +28,6 @@ public class FightResolver {
 		fis.setVariable("opponent", opponent);
         fis.setVariable("mana", mana);
         fis.evaluate(); 
-        //JFuzzyChart.get().chart(fis);
         return fis.getVariable("victory").getValue();
 	}
 }

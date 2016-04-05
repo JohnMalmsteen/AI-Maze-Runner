@@ -4,13 +4,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.File;
-import java.io.IOException;
 
 import javax.imageio.*;
 import javax.swing.*;
-import javax.swing.text.html.HTMLDocument.HTMLReader.BlockAction;
 
-import ie.gmit.sw.gameassets.BlastEndedSkrewt;
 import ie.gmit.sw.gameassets.Player;
 import ie.gmit.sw.maze.Cell;
 import ie.gmit.sw.maze.ConnectionType;

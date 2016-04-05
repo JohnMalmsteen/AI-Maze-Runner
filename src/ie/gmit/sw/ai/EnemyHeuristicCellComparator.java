@@ -2,7 +2,6 @@ package ie.gmit.sw.ai;
 
 import java.util.Comparator;
 
-import ie.gmit.sw.maze.Cell;
 import ie.gmit.sw.maze.Node;
 
 public class EnemyHeuristicCellComparator implements Comparator<Node> {

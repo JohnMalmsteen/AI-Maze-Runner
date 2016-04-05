@@ -1,13 +1,9 @@
 package ie.gmit.sw.ai;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
@@ -15,7 +11,6 @@ import java.util.Set;
 import ie.gmit.sw.game.GameRunner;
 import ie.gmit.sw.gameassets.Sprite;
 import ie.gmit.sw.maze.Cell;
-import ie.gmit.sw.maze.ConnectionType;
 import ie.gmit.sw.maze.Node;
 
 public class BestFirstMovementStrategy implements MovementStrategy{
