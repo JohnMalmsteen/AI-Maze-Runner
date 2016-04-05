@@ -11,6 +11,8 @@ Contents:
 2. How to Play
 3. Tools & Environment used
 4. Features
+5. Structure
+6. How to Deploy
 
 1 - About
 ---
@@ -84,3 +86,29 @@ The composition of my maze is Cell objects which contain refrences to their neig
 
 * Maze Changing
 Beware, the walls of this maze are alive and they will change every 20 seconds, it may open up a path for you to the cup, or it may leave you running a long route to it.
+
+5 - Structure
+---
+I have sorted my source code into 5 main packages:
+
+* ie.gmit.sw.ai
+Here I keep most of the Movement strategies for the enemies, although there is more path finding stuff in ie.gmit.sw.gameassets.Navigator and ie.gmit.sw.threads.KillerSpell
+
+In this package there is also the Fuzzy logic FightResolver.
+
+* ie.gmit.sw.game
+In this package I have the GameRunner class which is the main entry point class and deals with user input, I also have the GameView class which is charged with displaying the game.
+
+* ie.gmit.sw.gameassets
+Here I have Enemy classes, player class, and Item/Spell classes.
+
+* ie.gmit.sw.maze
+Here is the maze generator as well as the node/cell classes used by the path finders etc.
+
+* ie.gmit.sw.threads
+All of the enemies are threaded and there are also some other threaded activities (turning on and off paths, effects etc, as well as changing the maze) The Runnable implementations and the Runnable Factor are here.
+
+6 - How to Deploy
+---
+This project require that you have Java 1.8 and the Jfuzzylogic jar which is downloadable [here](http://jfuzzylogic.sourceforge.net/html/index.html)
+the main class is ie.gmit.sw.game.GameRunner
