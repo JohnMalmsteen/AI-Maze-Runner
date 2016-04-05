@@ -15,6 +15,7 @@ public class Player implements Sprite {
 	private static int mana = 0;
 	private int health = 3;
 	private static boolean weapon = false;
+	private static Spell spell = null;
 	
 	public Player(){
 		try {
@@ -70,6 +71,12 @@ public class Player implements Sprite {
 	
 	public static boolean getWeapon(){
 		return weapon;
+	}
+	public static Spell getSpell() {
+		return spell;
+	}
+	public static void setSpell(Spell spel) {
+		spell = spel;
 	}
 
 }

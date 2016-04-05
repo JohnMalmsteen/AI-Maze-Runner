@@ -4,6 +4,7 @@ import java.util.List;
 
 import ie.gmit.sw.gameassets.Item;
 import ie.gmit.sw.gameassets.Player;
+import ie.gmit.sw.gameassets.Spell;
 import ie.gmit.sw.gameassets.Sprite;
 
 public interface Cell {
@@ -42,4 +43,9 @@ public interface Cell {
 	public boolean hasManaBottle();
 	public void setWeapon(boolean hasweapon);
 	public boolean hasWeapon();
+	public void killSprites();
+	public Spell getSpell();
+	public void setSpell(Spell spell);
+	public boolean isKiling();
+	public void setKilling(boolean kill);
 }

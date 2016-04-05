@@ -35,6 +35,7 @@ public class GameView extends JPanel implements ActionListener{
 	private BufferedImage congrats;
 	private BufferedImage smallmana;
 	private BufferedImage sword;
+	private BufferedImage spell;
 	private static boolean gameOver = false;
 	private boolean playerWins = false;
 	
@@ -102,6 +103,9 @@ public class GameView extends JPanel implements ActionListener{
 	        		if(ch.getPathIndicator()){
 	        			g2.setColor(new Color(30, 30, 130));
 	        			g2.fillRect(x1, y1, size, size);
+	        		}else if(ch.isKiling()){
+	        			g2.setColor(new Color(130, 30, 30));
+	        			g2.fillRect(x1, y1, size, size);
 	        		}else{
 	        			g2.setColor(new Color(30, 130, 30));
 	        			g2.fillRect(x1, y1, size, size);
@@ -124,6 +128,9 @@ public class GameView extends JPanel implements ActionListener{
 	        		}
 	        		if(ch.getItem()!=null){
 	        			g2.drawImage(ch.getItem().getImage(), x1, y1, null);
+	        		}
+	        		if(ch.getSpell() != null){
+	        			g2.drawImage(spell, x1, y1, null);
 	        		}
 	        		
 	        		if(ch == GameRunner.getTriwizardCup()){
@@ -148,7 +155,6 @@ public class GameView extends JPanel implements ActionListener{
 	        		   		
 	        	}
 	        }
-	        System.out.println(Player.getMana()/20);
 	        for(int i = 0; i < (Player.getMana()/20); i++){
 	        	g2.drawImage(smallmana, i*(size/3), 0, null);
 	        }
@@ -187,6 +193,7 @@ public class GameView extends JPanel implements ActionListener{
 		congrats = ImageIO.read(new File("resources/congrats.png"));
 		smallmana = ImageIO.read(new File("resources/smallmana.png"));
 		sword = ImageIO.read(new File("resources/sword.png"));
+		spell = ImageIO.read(new File("resources/spell.png"));
 	}
 
 	public boolean isGameOver() {

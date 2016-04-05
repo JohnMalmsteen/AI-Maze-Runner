@@ -2,8 +2,11 @@ package ie.gmit.sw.maze;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ie.gmit.sw.gameassets.Enemy;
 import ie.gmit.sw.gameassets.Item;
 import ie.gmit.sw.gameassets.Player;
+import ie.gmit.sw.gameassets.Spell;
 import ie.gmit.sw.gameassets.Sprite;
 
 public class CellImpl extends AbstractCell {
@@ -13,6 +16,8 @@ public class CellImpl extends AbstractCell {
 	private List<Sprite> sprites = new ArrayList<>();
 	private boolean pathIndicator = false;;
 	private boolean manabottle = false; 
+	private Spell spell;
+	private boolean killing = false;
 	public CellImpl() {
 	
 	}
@@ -107,5 +112,30 @@ public class CellImpl extends AbstractCell {
 	
 	public void setWeapon(boolean hasweapon){
 		this.weapon = hasweapon;
+	}
+	
+	public void killSprites(){
+		for(Sprite sprite : sprites){
+			((Enemy)sprite).setAlive(false);
+		}
+		sprites.clear();
+	}
+
+	public Spell getSpell() {
+		return spell;
+	}
+
+	public void setSpell(Spell spell) {
+		this.spell = spell;
+	}
+
+	@Override
+	public boolean isKiling() {
+		return killing;
+	}
+
+	@Override
+	public void setKilling(boolean kill) {
+		killing = kill;
 	}
 }

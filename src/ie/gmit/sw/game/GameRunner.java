@@ -13,22 +13,21 @@ import javax.swing.*;
 import ie.gmit.sw.ai.EnemyHeuristicCellComparator;
 import ie.gmit.sw.ai.FightResolver;
 import ie.gmit.sw.ai.StrategyType;
-import ie.gmit.sw.gameassets.BlastEndedSkrewt;
+import ie.gmit.sw.gameassets.AvadaKedavra;
 import ie.gmit.sw.gameassets.Enemy;
 import ie.gmit.sw.gameassets.EnemyType;
 import ie.gmit.sw.gameassets.Item;
 import ie.gmit.sw.gameassets.Navigator;
 import ie.gmit.sw.gameassets.Player;
-import ie.gmit.sw.gameassets.Sprite;
-import ie.gmit.sw.gameassets.Voldemort;
 import ie.gmit.sw.maze.Cell;
 import ie.gmit.sw.maze.ConnectionType;
 import ie.gmit.sw.maze.MazeGenerator;
+import ie.gmit.sw.maze.Node;
 import ie.gmit.sw.threads.EntityFactory;
 import ie.gmit.sw.threads.PathIllimunator;
 
 public class GameRunner implements KeyListener{
-	private static final int MAZE_DIMENSION = 200;
+	private static final int MAZE_DIMENSION = 100;
 	private Cell[][] model;
 	private GameView view;
 	private static int currentRow;
@@ -54,6 +53,7 @@ public class GameRunner implements KeyListener{
     	placeItems();
     	placeMana();
     	placeWeapons();
+    	placeSpells();
     	
     	Dimension d = new Dimension(GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
     	view.setPreferredSize(d);
@@ -132,6 +132,21 @@ public class GameRunner implements KeyListener{
 		});
 	}
 	
+	private void placeSpells(){
+		int spellCount = (MAZE_DIMENSION*MAZE_DIMENSION)/80;
+		
+		IntStream.range(0, spellCount).forEach(i -> {
+			int wrow = rand.nextInt(MAZE_DIMENSION);
+			int wcol = rand.nextInt(MAZE_DIMENSION);
+			while(model[wrow][wcol].getItem() != null || model[wrow][wcol].hasManaBottle() || model[wrow][wcol].hasWeapon() || model[wrow][wcol].getSpell() != null){
+				wrow = rand.nextInt(MAZE_DIMENSION);
+				wcol = rand.nextInt(MAZE_DIMENSION);
+			}
+
+			model[wrow][wcol].setSpell(new AvadaKedavra());
+		});
+	}
+	
 	private void placeItems(){
 		int navCount = (MAZE_DIMENSION*MAZE_DIMENSION)/50;
 		IntStream.range(0, navCount).forEach(i -> {
@@ -179,7 +194,11 @@ public class GameRunner implements KeyListener{
         	}
         }else if (e.getKeyCode() == KeyEvent.VK_Z){
         	view.toggleZoom();
-        }else{
+        }else if(e.getKeyCode() == KeyEvent.VK_A && Player.getSpell() != null){
+        	Player.getSpell().use(new Node(model[currentRow][currentCol]));
+        	Player.setSpell(null);
+        }
+        else{
         	return;
         }
         updateView();  
@@ -202,6 +221,14 @@ public class GameRunner implements KeyListener{
 	        		enemy.setAlive(false);
 	        		model[currentRow][currentCol].removeSprite(enemy);
 	        		Player.setWeapon(false);
+	        	}
+	        }
+	        
+	        
+	        if(model[currentRow][currentCol].getSpell() != null){
+	        	if(Player.getSpell() == null){
+		        	Player.setSpell(model[currentRow][currentCol].getSpell());
+		        	model[currentRow][currentCol].setSpell(null);
 	        	}
 	        }
 	        
