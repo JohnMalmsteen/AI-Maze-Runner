@@ -33,6 +33,10 @@ public class MazeGenerator {
 			}
 		}		
 		//connect the model together
+		connections();
+	}
+	
+	public void connections(){
 		IntStream.range(0, width).forEach(row -> {
 			IntStream.range(0, height).forEach(col -> {
 			

@@ -24,6 +24,7 @@ import ie.gmit.sw.maze.ConnectionType;
 import ie.gmit.sw.maze.MazeGenerator;
 import ie.gmit.sw.maze.Node;
 import ie.gmit.sw.threads.EntityFactory;
+import ie.gmit.sw.threads.MazeChanger;
 import ie.gmit.sw.threads.PathIllimunator;
 
 public class GameRunner implements KeyListener{
@@ -48,7 +49,8 @@ public class GameRunner implements KeyListener{
     	skrewtCount = (MAZE_DIMENSION * MAZE_DIMENSION)/60;
     	pool = Executors.newCachedThreadPool();
     	factory = EntityFactory.getInstance();
-   		
+   		Runnable mazechanger = new MazeChanger(maze);
+   		pool.submit(mazechanger);
     	placePlayer();
     	placeItems();
     	placeMana();
