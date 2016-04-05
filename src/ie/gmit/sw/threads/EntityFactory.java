@@ -5,6 +5,7 @@ import ie.gmit.sw.gameassets.BlastEndedSkrewt;
 import ie.gmit.sw.gameassets.DeathEater;
 import ie.gmit.sw.gameassets.Enemy;
 import ie.gmit.sw.gameassets.EnemyType;
+import ie.gmit.sw.gameassets.Voldemort;
 import ie.gmit.sw.maze.Cell;
 
 public class EntityFactory {
@@ -22,6 +23,8 @@ public class EntityFactory {
 			ret = new BlastEndedSkrewt(initial, strat);
 		}else if(enemyType == EnemyType.DEATHEATER){
 			ret = new DeathEater(initial, strat);
+		}else if(enemyType == EnemyType.VOLDEMORT){
+			ret = new Voldemort(initial, strat);
 		}
 		return new IndependentEntity(ret);
 	}

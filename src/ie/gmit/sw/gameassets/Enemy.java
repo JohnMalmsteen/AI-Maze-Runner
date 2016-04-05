@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 public abstract class Enemy implements Sprite {
 	private BufferedImage image;
 	private String strength;
-	private boolean alive;
+	private boolean alive = true;
 	public Enemy(){
 		try {
 			image = ImageIO.read(new File("resources/spider_up.png"));

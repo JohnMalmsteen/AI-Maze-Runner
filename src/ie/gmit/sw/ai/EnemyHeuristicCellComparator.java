@@ -3,16 +3,17 @@ package ie.gmit.sw.ai;
 import java.util.Comparator;
 
 import ie.gmit.sw.maze.Cell;
+import ie.gmit.sw.maze.Node;
 
-public class EnemyHeuristicCellComparator implements Comparator<Cell> {
+public class EnemyHeuristicCellComparator implements Comparator<Node> {
 	private static int targetRow = 0;
 	private static int targetColumn = 0;
 	
 	@Override
-	public int compare(Cell cell1, Cell cell2) {
-		if(cell1.getDistanceToCell(targetRow, targetColumn) > cell2.getDistanceToCell(targetRow, targetColumn)){
+	public int compare(Node cell1, Node cell2) {
+		if(cell1.getCell().getDistanceToCell(targetRow, targetColumn) > cell2.getCell().getDistanceToCell(targetRow, targetColumn)){
 			return -1;
-		}else if(cell1.getDistanceToCell(targetRow, targetColumn) < cell2.getDistanceToCell(targetRow, targetColumn)){
+		}else if(cell1.getCell().getDistanceToCell(targetRow, targetColumn) < cell2.getCell().getDistanceToCell(targetRow, targetColumn)){
 			return 1;
 		}
 		else{
